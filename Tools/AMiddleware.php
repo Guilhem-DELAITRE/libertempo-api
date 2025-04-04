@@ -1,10 +1,10 @@
 <?php declare(strict_types = 1);
 namespace LibertAPI\Tools;
 
+use Psr\Http\Message\ResponseInterface;
 use \Slim\App as App;
-use Psr\Http\Message\ServerRequestInterface as IRequest;
-use Psr\Http\Message\ResponseInterface as IResponse;
-
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 /**
  * @since 1.0
  */
@@ -22,5 +22,7 @@ abstract class AMiddleware
         return $this->container;
     }
 
-    abstract public function __invoke(IRequest $request, IResponse $response, callable $next) : IResponse;
+    abstract public function __invoke(ServerRequestInterface $request, RequestHandlerInterface $handler) : ResponseInterface;
+
+
 }

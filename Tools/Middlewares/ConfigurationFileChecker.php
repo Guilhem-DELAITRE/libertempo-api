@@ -1,24 +1,26 @@
 <?php declare(strict_types = 1);
 namespace LibertAPI\Tools\Middlewares;
 
-use Psr\Http\Message\ServerRequestInterface as IRequest;
-use Psr\Http\Message\ResponseInterface as IResponse;
+use LibertAPI\Tools\AMiddleware;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
+use Psr\Http\Message\ResponseInterface;
 
 /**
  * Récupère les informations du fichier de configuration
  *
  * @since 1.3
  */
-final class ConfigurationFileChecker extends \LibertAPI\Tools\AMiddleware
+final class ConfigurationFileChecker extends AMiddleware
 {
-    public function __invoke(IRequest $request, IResponse $response, callable $next) : IResponse
+    public function __invoke(ServerRequestInterface $request, RequestHandlerInterface $handler) : ResponseInterface
     {
         $configuration = ('ci' == $request->getHeaderLine('stage', null))
             ? $this->getTestConfiguration()
             : $this->getRealConfiguration();
         $this->getContainer()->set('configurationFileData', $configuration);
 
-        return $next($request, $response);
+        return $handler->handle($request);
     }
 
     private function getTestConfiguration() : \stdClass

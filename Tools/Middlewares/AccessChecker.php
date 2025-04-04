@@ -1,18 +1,19 @@
 <?php declare(strict_types = 1);
 namespace LibertAPI\Tools\Middlewares;
 
-use Psr\Http\Message\ServerRequestInterface as IRequest;
-use Psr\Http\Message\ResponseInterface as IResponse;
-use \LibertAPI\Tools\Helpers\Formatter;
+use LibertAPI\Tools\AMiddleware;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
+use Psr\Http\Message\ResponseInterface;
 
 /**
  * Vérifie les autorisations d'accès pour la route et l'utilisateur donnés
  *
  * @since 1.1
  */
-final class AccessChecker extends \LibertAPI\Tools\AMiddleware
+final class AccessChecker extends AMiddleware
 {
-    public function __invoke(IRequest $request, IResponse $response, callable $next) : IResponse
+    public function __invoke(ServerRequestInterface $request, RequestHandlerInterface $handler) : ResponseInterface
     {
         $ressourcePath = $request->getAttribute('nomRessources');
         $container = $this->getContainer();
@@ -28,7 +29,7 @@ final class AccessChecker extends \LibertAPI\Tools\AMiddleware
             case 'HelloWorld':
             case 'Journal':
             case 'Planning|Creneau':
-                return $next($request, $response);
+                return $handler->handle($request);
             case 'Groupe':
             case 'Groupe|Employe':
             case 'Groupe|GrandResponsable':
@@ -38,11 +39,11 @@ final class AccessChecker extends \LibertAPI\Tools\AMiddleware
                     return call_user_func(
                         $container->get('forbiddenHandler'),
                         $request,
-                        $response
+                        $handler
                     );
                 }
 
-                return $next($request, $response);
+                return $handler->handle($request);
             case 'JourFerie':
             case 'Utilisateur':
                 $user = $request->getAttribute('currentUser');
@@ -50,22 +51,22 @@ final class AccessChecker extends \LibertAPI\Tools\AMiddleware
                     return call_user_func(
                         $container->get('forbiddenHandler'),
                         $request,
-                        $response
+                        $handler
                     );
                 }
 
-                return $next($request, $response);
+                return $handler->handle($request);
             case 'Planning':
                 $user = $request->getAttribute('currentUser');
                 if (!$user->isResponsable() && !$user->isHautResponsable() && !$user->isAdmin()) {
                     return call_user_func(
                         $container->get('forbiddenHandler'),
                         $request,
-                        $response
+                        $handler
                     );
                 }
 
-                return $next($request, $response);
+                return $handler->handle($request);
             default:
                 throw new \RuntimeException('Rights were not configured for the route ' . $ressourcePath);
         }

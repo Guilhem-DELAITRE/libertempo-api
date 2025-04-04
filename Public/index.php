@@ -14,8 +14,8 @@ define('TESTS_FUNCTIONALS_PATH', ROOT_PATH . DS . 'Tests' . DS . 'Functionals');
  */
 function findAutoloader(string $dir)
 {
-    if (is_dir($dir . DS . 'Vendor')) {
-        require_once $dir . DS . 'Vendor' . DS . 'autoload.php';
+    if (is_dir($dir . DS . 'vendor')) {
+        require_once $dir . DS . 'vendor' . DS . 'autoload.php';
         return;
     } elseif (is_dir($dir . DS . 'vendor')) {
         require_once $dir . DS . 'vendor' . DS . 'autoload.php';
@@ -29,3 +29,4 @@ findAutoloader(ROOT_PATH);
 $app = require_once TOOLS_PATH . DS . 'App.php';
 /* Jump in ! */
 $app->run();
+

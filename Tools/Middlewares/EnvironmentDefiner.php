@@ -1,8 +1,10 @@
 <?php declare(strict_types = 1);
 namespace LibertAPI\Tools\Middlewares;
 
-use Psr\Http\Message\ServerRequestInterface as IRequest;
-use Psr\Http\Message\ResponseInterface as IResponse;
+use LibertAPI\Tools\AMiddleware;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
+use Psr\Http\Message\ResponseInterface;
 use \Rollbar\Rollbar;
 
 /**
@@ -10,9 +12,9 @@ use \Rollbar\Rollbar;
  *
  * @since 1.5
  */
-final class EnvironmentDefiner extends \LibertAPI\Tools\AMiddleware
+final class EnvironmentDefiner extends AMiddleware
 {
-    public function __invoke(IRequest $request, IResponse $response, callable $next) : IResponse
+    public function __invoke(ServerRequestInterface $request, RequestHandlerInterface $handler) : ResponseInterface
     {
         $configuration = $this->getContainer()->get('configurationFileData');
         $stage = (!isset($configuration->stage) || 'development' !== $configuration->stage)
@@ -24,7 +26,7 @@ final class EnvironmentDefiner extends \LibertAPI\Tools\AMiddleware
             $this->defineProduction();
         }
 
-        return $next($request, $response);
+        return $handler->handle($request);
     }
 
     private function defineDevelopment()
@@ -48,8 +50,6 @@ final class EnvironmentDefiner extends \LibertAPI\Tools\AMiddleware
 
     private function defineProduction()
     {
-        assert_options(ASSERT_ACTIVE, 0);
-        ini_set('assert.exception', '0');
         error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT);
         ini_set("display_errors", '0');
     }

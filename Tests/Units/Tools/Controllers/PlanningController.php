@@ -126,7 +126,7 @@ final class PlanningController extends \LibertAPI\Tests\Units\Tools\Libraries\AR
     public function testPostFallback()
     {
         $this->request->getMockController()->getParsedBody = [];
-        $this->repository->getMockController()->postOne = function () {
+        $this->repository->getMockController()->postOne = function (): void {
             throw new \Exception('');
         };
         $this->newTestedInstance($this->repository, $this->router, $this->entityManager);
@@ -161,7 +161,7 @@ final class PlanningController extends \LibertAPI\Tests\Units\Tools\Libraries\AR
     {
         $this->request->getMockController()->getParsedBody = [];
 
-        $this->repository->getMockController()->putOne = function () {
+        $this->repository->getMockController()->putOne = function (): void {
             throw new \LibertAPI\Tools\Exceptions\MissingArgumentException('');
         };
         $this->newTestedInstance($this->repository, $this->router, $this->entityManager);
@@ -177,7 +177,7 @@ final class PlanningController extends \LibertAPI\Tests\Units\Tools\Libraries\AR
     public function testPutBadDomain()
     {
         $this->request->getMockController()->getParsedBody = [];
-        $this->repository->getMockController()->putOne = function () {
+        $this->repository->getMockController()->putOne = function (): void {
             throw new \DomainException('');
         };
         $this->newTestedInstance($this->repository, $this->router, $this->entityManager);
@@ -193,7 +193,7 @@ final class PlanningController extends \LibertAPI\Tests\Units\Tools\Libraries\AR
     public function testPutPutOneFallback()
     {
         $this->request->getMockController()->getParsedBody = $this->getEntiteContent();
-        $this->repository->getMockController()->putOne = function () {
+        $this->repository->getMockController()->putOne = function (): void {
             throw new \LogicException('');
         };
         $this->newTestedInstance($this->repository, $this->router, $this->entityManager);
@@ -241,7 +241,7 @@ final class PlanningController extends \LibertAPI\Tests\Units\Tools\Libraries\AR
      */
     public function testDeleteNotFound()
     {
-        $this->repository->getMockController()->deleteOne = function () {
+        $this->repository->getMockController()->deleteOne = function (): void {
             throw new UnknownResourceException('');
         };
         $this->newTestedInstance($this->repository, $this->router, $this->entityManager);
@@ -256,7 +256,7 @@ final class PlanningController extends \LibertAPI\Tests\Units\Tools\Libraries\AR
      */
     public function testDeleteFallback()
     {
-        $this->repository->getMockController()->deleteOne = function () {
+        $this->repository->getMockController()->deleteOne = function (): void {
             throw new \LogicException('');
         };
         $this->newTestedInstance($this->repository, $this->router, $this->entityManager);

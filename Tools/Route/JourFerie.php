@@ -1,6 +1,7 @@
 <?php declare(strict_types = 1);
 
 use LibertAPI\Tools\Controllers\JourFerieController;
+use Slim\Routing\RouteCollectorProxy;
 
 /**
  * Doit être importé après la création de $app. Ne créé rien.
@@ -9,7 +10,7 @@ use LibertAPI\Tools\Controllers\JourFerieController;
  */
 
 /* Route sur le jour férié */
-$app->group('/jour_ferie', function () {
+$app->group('/jour_ferie', function (RouteCollectorProxy $jourFerie): void {
     /* Collection */
-    $this->get('', [JourFerieController::class, 'get'])->setName('getJourFerieListe');
+    $jourFerie->get('', [JourFerieController::class, 'get'])->setName('getJourFerieListe');
 });

@@ -1,3 +1,4 @@
 configuration.json
 clover.xml
-Vendor/
+vendor/
+.idea/

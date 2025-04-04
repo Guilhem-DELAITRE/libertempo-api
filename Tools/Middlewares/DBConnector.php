@@ -1,8 +1,11 @@
 <?php declare(strict_types = 1);
 namespace LibertAPI\Tools\Middlewares;
 
-use Psr\Http\Message\ServerRequestInterface as IRequest;
-use Psr\Http\Message\ResponseInterface as IResponse;
+use Doctrine\ORM\ORMSetup;
+use LibertAPI\Tools\AMiddleware;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
+use Psr\Http\Message\ResponseInterface;
 use Doctrine\DBAL;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Tools\Setup;
@@ -12,30 +15,29 @@ use Doctrine\ORM\Tools\Setup;
  *
  * @since 1.0
  */
-final class DBConnector extends \LibertAPI\Tools\AMiddleware
+final class DBConnector extends AMiddleware
 {
-    public function __invoke(IRequest $request, IResponse $response, callable $next) : IResponse
+    public function __invoke(ServerRequestInterface $request, RequestHandlerInterface $handler) : ResponseInterface
     {
         $dbh = ('ci' === $request->getHeaderLine('stage', null))
             ? $this->getTestBase()
             : $this->getRealBase();
-        $connexion = DBAL\DriverManager::getConnection(['pdo' => $dbh]);
+        $connexion = DBAL\DriverManager::getConnection(['pdo' => $dbh, 'driver' => 'pdo_mysql']);
 
         // Create a simple "default" Doctrine ORM configuration for Annotations
         // @TODO: Alter if prod mod
         $isDevMode = true;
         $useSimpleAnnotation = false;
         $paths = [__DIR__ . '/'];
-        $configuration = Setup::createAnnotationMetadataConfiguration(
+        $configuration = ORMSetup::createAttributeMetadataConfiguration(
             $paths,
             $isDevMode,
-            $useSimpleAnnotation
         );
         $this->getContainer()->set('storageConnector', $connexion);
-        $em = EntityManager::create($connexion, $configuration);
+        $em = new EntityManager($connexion, $configuration);
         $this->getContainer()->set('entityManager', $em);
 
-        return $next($request, $response);
+        return $handler->handle($request);
     }
 
     private function getTestBase() : \PDO

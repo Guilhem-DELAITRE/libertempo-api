@@ -2,7 +2,7 @@
 
 define('DS', DIRECTORY_SEPARATOR);
 define('ROOT_PATH', __DIR__);
-require_once ROOT_PATH . DS . 'Vendor' . DS . 'autoload.php';
+require_once ROOT_PATH . DS . 'vendor' . DS . 'autoload.php';
 
 use mageekguy\atoum\reports;
 use mageekguy\atoum\reports\coverage;

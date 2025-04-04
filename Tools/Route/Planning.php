@@ -2,6 +2,7 @@
 
 use LibertAPI\Tools\Controllers\PlanningController;
 use LibertAPI\Tools\Controllers\PlanningCreneauController;
+use Slim\Routing\RouteCollectorProxy;
 
 /*
  * Doit être importé après la création de $app. Ne créé rien.
@@ -10,27 +11,27 @@ use LibertAPI\Tools\Controllers\PlanningCreneauController;
  */
 
 /* Routes sur le planning et associés */
-$app->group('/planning', function () {
-    $this->group('/{planningId:[0-9]+}', function () {
+$app->group('/planning', function (RouteCollectorProxy $planning): void {
+    $planning->group('/{planningId:[0-9]+}', function (RouteCollectorProxy $planningId): void {
         /* Detail */
-        $this->get('', [PlanningController::class, 'get'])->setName('getPlanningDetail');
-        $this->put('', [PlanningController::class, 'put'])->setName('putPlanningDetail');
-        $this->delete('', [PlanningController::class, 'delete'])->setName('deletePlanningDetail');
+        $planningId->get('', [PlanningController::class, 'get'])->setName('getPlanningDetail');
+        $planningId->put('', [PlanningController::class, 'put'])->setName('putPlanningDetail');
+        $planningId->delete('', [PlanningController::class, 'delete'])->setName('deletePlanningDetail');
 
         /* Dependances de plannings */
-        $this->group('/creneau', function () {
+        $planningId->group('/creneau', function (RouteCollectorProxy $creneau): void {
             /* Detail creneaux */
-            $this->get('/{creneauId:[0-9]+}', [PlanningCreneauController::class, 'get'])->setName('getPlanningCreneauDetail');
-            $this->put('/{creneauId:[0-9]+}', [PlanningCreneauController::class, 'put'])->setName('putPlanningCreneauDetail');
+            $creneau->get('/{creneauId:[0-9]+}', [PlanningCreneauController::class, 'get'])->setName('getPlanningCreneauDetail');
+            $creneau->put('/{creneauId:[0-9]+}', [PlanningCreneauController::class, 'put'])->setName('putPlanningCreneauDetail');
             //$this->delete('/{creneauId:[0-9]+}', $creneauNS . ':delete')->setName('deletePlanningCreneauDetail');
 
             /* Collection creneaux */
-            $this->get('', [PlanningCreneauController::class, 'get'])->setName('getPlanningCreneauListe');
-            $this->post('', [PlanningCreneauController::class, 'post'])->setName('postPlanningCreneauListe');
+            $creneau->get('', [PlanningCreneauController::class, 'get'])->setName('getPlanningCreneauListe');
+            $creneau->post('', [PlanningCreneauController::class, 'post'])->setName('postPlanningCreneauListe');
         });
     });
 
     /* Collection */
-    $this->get('', [PlanningController::class, 'get'])->setName('getPlanningListe');
-    $this->post('', [PlanningController::class, 'post'])->setName('postPlanningListe');
+    $planning->get('', [PlanningController::class, 'get'])->setName('getPlanningListe');
+    $planning->post('', [PlanningController::class, 'post'])->setName('postPlanningListe');
 });

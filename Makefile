@@ -39,8 +39,8 @@ patch:  ## Monte la version patch du logiciel
 test: test-unit test-functional ## Lance tous les tests applicatifs
 
 test-unit: ## Lance les tests unitaires
-	Vendor/Bin/atoum -ulr
+	vendor/bin/atoum -ulr
 
 test-functional: ## Lance les tests fonctionnels
 	cp Tests/Functionals/_data/database.sqlite Tests/Functionals/_data/current.sqlite
-	Vendor/Bin/codecept run api -f
+	vendor/bin/codecept run api -f

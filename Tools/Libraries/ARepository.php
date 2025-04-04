@@ -1,6 +1,7 @@
 <?php declare(strict_types = 1);
 namespace LibertAPI\Tools\Libraries;
 
+use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Driver;
 use Doctrine\DBAL\Query\QueryBuilder;
 use \LibertAPI\Tools\Exceptions\UnknownResourceException;
@@ -20,7 +21,7 @@ use \LibertAPI\Tools\Exceptions\UnknownResourceException;
  */
 abstract class ARepository
 {
-    public function __construct(Driver\Connection $storageConnector)
+    public function __construct(Connection $storageConnector)
     {
         $this->storageConnector = $storageConnector;
         $this->queryBuilder = $storageConnector->createQueryBuilder();

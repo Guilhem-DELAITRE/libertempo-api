@@ -4,6 +4,9 @@ use Psr\Container\ContainerInterface as C;
 use Doctrine\ORM\EntityManager;
 use DI\Container;
 use Invoker\CallableResolver;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
+use Slim\Http\Factory\DecoratedResponseFactory;
 use Slim\Http\Headers;
 use Slim\Http\Request;
 use Slim\Http\Response;
@@ -14,6 +17,8 @@ use LibertAPI\Tools\Controllers\AuthentificationController;
 use LibertAPI\Utilisateur\UtilisateurRepository;
 use LibertAPI\Tools\Libraries\Application;
 use LibertAPI\Tools\Libraries\StorageConfiguration;
+use Slim\Psr7\Factory\ResponseFactory;
+use Slim\Psr7\Factory\StreamFactory;
 use function DI\get;
 use function DI\create;
 use function DI\autowire;
@@ -73,7 +78,7 @@ function configurationHandlers() : array
     return [
         'foundHandler' => create(\Slim\Handlers\Strategies\RequestResponse::class),
         'badRequestHandler' => function (C $c) {
-            return function (IRequest $request, IResponse $response) use ($c) {
+            return function (ServerRequestInterface $request, RequestHandlerInterface $response) use ($c) {
                 return call_user_func(
                     $c->get('clientErrorHandler'),
                     $request,
@@ -84,41 +89,43 @@ function configurationHandlers() : array
             };
         },
         'forbiddenHandler' => function (C $c) {
-            return function (IRequest $request, IResponse $response) use ($c) {
+            return function (ServerRequestInterface $request, RequestHandlerInterface $handler) use ($c) {
                 return call_user_func(
                     $c->get('clientErrorHandler'),
                     $request,
-                    $response,
+                    $handler,
                     403,
                     'User has not access to « ' . $request->getUri()->getPath() . ' » resource'
                 );
             };
         },
         'unauthorizedHandler' => function (C $c) {
-            return function (IRequest $request, IResponse $response) use ($c) {
+            return function (ServerRequestInterface $request, RequestHandlerInterface $handler) use ($c) {
                 return call_user_func(
                     $c->get('clientErrorHandler'),
                     $request,
-                    $response,
+                    $handler,
                     401,
                     'Bad API Key'
                 );
             };
         },
         'notFoundHandler' => function (C $c) {
-            return function (IRequest $request, IResponse $response) use ($c) {
+            return function (ServerRequestInterface $request, RequestHandlerInterface $handler) use ($c) {
                 return call_user_func(
                     $c->get('clientErrorHandler'),
                     $request,
-                    $response,
+                    $handler,
                     404,
                     '« ' . $request->getUri()->getPath() . ' » is not a valid resource'
                 );
             };
         },
         'clientErrorHandler' => function (C $c) {
-            return function (IRequest $request, IResponse $response, int $code, string $messageData) {
-                $responseUpd = $response->withStatus($code);
+            return function (ServerRequestInterface $request, RequestHandlerInterface $handler, int $code, string $messageData) {
+                $responseFactory = new DecoratedResponseFactory(new ResponseFactory(), new StreamFactory());
+                $responseUpd = $responseFactory->createResponse();
+                $responseUpd = $responseUpd->withStatus($code);
                 $data = [
                     'code' => $code,
                     'status' => 'fail',
@@ -131,31 +138,32 @@ function configurationHandlers() : array
             };
         },
         'phpErrorHandler' => function (C $c) {
-            return function (IRequest $request, IResponse $response, \Throwable $throwable) use ($c) {
+            return function (ServerRequestInterface $request, RequestHandlerInterface $handler, \Throwable $throwable) use ($c) {
                 return call_user_func(
                     $c->get('serverErrorHandler'),
                     $request,
-                    $response,
+                    $handler,
                     $throwable
                 );
             };
         },
         'errorHandler' => function (C $c) {
-            return function (IRequest $request, IResponse $response, \Exception $exception) use ($c) {
+            return function (ServerRequestInterface $request, RequestHandlerInterface $handler, \Exception $exception) use ($c) {
                 return call_user_func(
                     $c->get('serverErrorHandler'),
                     $request,
-                    $response,
+                    $handler,
                     $exception
                 );
             };
         },
         'serverErrorHandler' => function (C $c) {
-            return function (IRequest $request, IResponse $response, \Throwable $throwable) {
+            return function (ServerRequestInterface $request, RequestHandlerInterface $handler, \Throwable $throwable) {
                 Rollbar::error($throwable->getMessage(), ['trace' => substr($throwable->getTraceAsString(), 0, 1000) . '[...]']);
 
+                $responseFactory = new DecoratedResponseFactory(new ResponseFactory(), new StreamFactory());
+                $responseUpd = $responseFactory->createResponse();
                 $code = 500;
-                $responseUpd = $response->withStatus($code);
                 return $responseUpd->withJson([
                     'code' => $code,
                     'status' => 'error',
@@ -165,12 +173,12 @@ function configurationHandlers() : array
             };
         },
         'notAllowedHandler' => function (C $c) {
-            return function (IRequest $request, IResponse $response, array $methods) use ($c) {
+            return function (ServerRequestInterface $request, RequestHandlerInterface $handler, array $methods) use ($c) {
                 $methodString = implode(', ', $methods);
                 $responseUpd = call_user_func(
                     $c->get('clientErrorHandler'),
                     $request,
-                    $response,
+                    $handler,
                     405,
                     'Method on « ' . $request->getUri()->getPath() . ' » must be one of : ' . $methodString
                 );
@@ -189,7 +197,7 @@ function configurationLibertempo() : array
             $repo->setApplication($c->get(Application::class));
             return new AuthentificationController($repo, $c->get(IRouter::class), $c->get(StorageConfiguration::class), $c->get(EntityManager::class));
         },
-        Doctrine\DBAL\Driver\Connection::class => function (C $c) {
+        Doctrine\DBAL\Connection::class => function (C $c) {
             return $c->get('storageConnector');
         },
         EntityManager::class => get('entityManager'),

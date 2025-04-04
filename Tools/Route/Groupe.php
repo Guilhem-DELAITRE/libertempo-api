@@ -4,6 +4,7 @@ use LibertAPI\Tools\Controllers\GroupeController;
 use LibertAPI\Tools\Controllers\GroupeGrandResponsableController;
 use LibertAPI\Tools\Controllers\GroupeResponsableController;
 use LibertAPI\Tools\Controllers\GroupeEmployeController;
+use Slim\Routing\RouteCollectorProxy;
 
 /*
  * Doit être importé après la création de $app. Ne créé rien.
@@ -12,21 +13,21 @@ use LibertAPI\Tools\Controllers\GroupeEmployeController;
  */
 
 /* Routes sur le groupe */
-$app->group('/groupe', function () {
-    $this->group('/{groupeId:[0-9]+}', function () {
+$app->group('/groupe', function (RouteCollectorProxy $groupe): void {
+    $groupe->group('/{groupeId:[0-9]+}', function (RouteCollectorProxy $groupeId): void {
         /* Detail */
-        $this->get('', [GroupeController::class, 'get'])->setName('getGroupeDetail');
+        $groupeId->get('', [GroupeController::class, 'get'])->setName('getGroupeDetail');
 
         /* Dependances de groupe : responsable */
-        $this->get('/responsable', [GroupeResponsableController::class, 'get'])->setName('getGroupeResponsableListe');
+        $groupeId->get('/responsable', [GroupeResponsableController::class, 'get'])->setName('getGroupeResponsableListe');
 
         /* Dependances de groupe : grand responsable */
-        $this->get('/grand_responsable', [GroupeGrandResponsableController::class, 'get'])->setName('getGroupeGrandResponsableListe');
+        $groupeId->get('/grand_responsable', [GroupeGrandResponsableController::class, 'get'])->setName('getGroupeGrandResponsableListe');
 
         /* Dependances de groupe : employe */
-        $this->get('/employe', [GroupeEmployeController::class, 'get'])->setName('getGroupeEmployeListe');
+        $groupeId->get('/employe', [GroupeEmployeController::class, 'get'])->setName('getGroupeEmployeListe');
     });
 
     /* Collection */
-    $this->get('', [GroupeController::class, 'get'])->setName('getGroupeListe');
+    $groupe->get('', [GroupeController::class, 'get'])->setName('getGroupeListe');
 });

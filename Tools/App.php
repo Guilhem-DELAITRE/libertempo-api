@@ -7,12 +7,15 @@ use Psr\Http\Message\ServerRequestInterface as IRequest;
 use Psr\Http\Message\ResponseInterface as IResponse;
 use LibertAPI\Tools\Middlewares;
 use DI\ContainerBuilder;
+use Slim\Factory\AppFactory;
 
 define('ROUTE_PATH', TOOLS_PATH . DS . 'Route');
 
 $containerBuilder = new ContainerBuilder;
 $containerBuilder->addDefinitions(ROOT_PATH . DS . 'di-config.php');
-$app = new \Slim\App($containerBuilder->build());
+
+AppFactory::setContainer($containerBuilder->build());
+$app = AppFactory::create();
 
 /*
  * /!\ Les Middlewares sont executés en mode PILE : le premier de la liste est lancé en dernier

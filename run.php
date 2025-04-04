@@ -4,7 +4,7 @@
  * Date: 09/01/14
  * Time: 13:37
  */
-require_once 'Vendor/autoload.php';
+require_once 'vendor/autoload.php';
 include_once 'config.php';
 ini_set("display_errors", $configuration['display_error']);
 $classLoader = new \Doctrine\Common\ClassLoader('Doctrine');

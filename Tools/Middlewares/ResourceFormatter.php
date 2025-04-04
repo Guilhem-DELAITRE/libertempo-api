@@ -1,9 +1,12 @@
 <?php declare(strict_types = 1);
 namespace LibertAPI\Tools\Middlewares;
 
-use Psr\Http\Message\ServerRequestInterface as IRequest;
-use Psr\Http\Message\ResponseInterface as IResponse;
+use LibertAPI\Tools\AMiddleware;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
+use Psr\Http\Message\ResponseInterface;
 use \LibertAPI\Tools\Helpers\Formatter;
+use Rollbar\ResponseHandlerInterface;
 
 /**
  * Découvre et met en forme les noms des ressources
@@ -12,7 +15,7 @@ use \LibertAPI\Tools\Helpers\Formatter;
  */
 final class ResourceFormatter extends \LibertAPI\Tools\AMiddleware
 {
-    public function __invoke(IRequest $request, IResponse $response, callable $next) : IResponse
+    public function __invoke(ServerRequestInterface $request, RequestHandlerInterface $handler) : ResponseInterface
     {
         $path = trim(trim($request->getUri()->getPath()), '/');
         $api = 'api/';
@@ -31,6 +34,6 @@ final class ResourceFormatter extends \LibertAPI\Tools\AMiddleware
         }
         $request = $request->withAttribute('nomRessources', implode('|', $ressources));
 
-        return $next($request, $response);
+        return $handler->handle($request);
     }
 }
