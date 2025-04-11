@@ -8,7 +8,7 @@ namespace LibertAPI\Absence\Type;
  * @author Wouldsmina
  *
  * @since 0.5
- * @see \LibertAPI\Tests\Units\Absence\Type\TypeEntite
+ * @see \LibertAPI\Tests\Units\Absence\Type\TypeEntiteTest
  */
 class TypeEntite extends \LibertAPI\Tools\Libraries\AEntite
 {

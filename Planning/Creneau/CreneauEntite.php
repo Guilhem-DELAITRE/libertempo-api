@@ -10,7 +10,7 @@ use LibertAPI\Tools\Exceptions\MissingArgumentException;
  * @author Wouldsmina
  *
  * @since 0.1
- * @see \LibertAPI\Tests\Units\Planning\Creneau\Entite
+ * @see \LibertAPI\Tests\Units\Planning\PlanningEntiteTest
  *
  * Ne devrait être contacté que par le CreneauRepository
  * Ne devrait contacter personne

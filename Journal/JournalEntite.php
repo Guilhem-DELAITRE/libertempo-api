@@ -8,7 +8,7 @@ namespace LibertAPI\Journal;
  * @author Wouldsmina
  *
  * @since 0.5
- * @see \LibertAPI\Tests\Units\Journal\JournalEntite
+ * @see \LibertAPI\Tests\Units\Journal\JournalEntiteTest
  */
 final class JournalEntite extends \LibertAPI\Tools\Libraries\AEntite
 {

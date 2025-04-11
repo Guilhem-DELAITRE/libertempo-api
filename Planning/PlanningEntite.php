@@ -10,7 +10,7 @@ use LibertAPI\Tools\Exceptions\MissingArgumentException;
  * @author Wouldsmina
  *
  * @since 0.1
- * @see \LibertAPI\Tests\Units\Planning\PlanningEntite
+ * @see \LibertAPI\Tests\Units\Planning\PlanningEntiteTest
  *
  * Ne devrait être contacté que par le PlanningRepository
  * Ne devrait contacter personne

@@ -10,7 +10,7 @@ use LibertAPI\Tools\Exceptions\MissingArgumentException;
  * @author Wouldsmina
  *
  * @since 1.8
- * @see \LibertAPI\Tests\Units\Heure\Additionnelle\AdditionnelleEntite
+ * @see \LibertAPI\Tests\Units\Heure\Additionnelle\AdditionnelleEntiteTest
  *
  * Ne devrait être contacté que par l' AdditionnelleRepository
  * Ne devrait contacter personne

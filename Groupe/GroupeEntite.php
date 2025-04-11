@@ -10,7 +10,7 @@ use LibertAPI\Tools\Exceptions\MissingArgumentException;
  * @author Wouldsmina
  *
  * @since 0.7
- * @see \LibertAPI\Tests\Units\Groupe\GroupeEntite
+ * @see \LibertAPI\Tests\Units\Groupe\GroupeEntiteTest
  *
  * Ne devrait être contacté que par le GroupeRepository
  * Ne devrait contacter personne

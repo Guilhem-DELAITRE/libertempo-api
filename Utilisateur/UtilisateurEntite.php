@@ -11,7 +11,7 @@ use LibertAPI\Tools\Helpers\Formatter;
  * @author Wouldsmina
  *
  * @since 0.2
- * @see \LibertAPI\Tests\Units\Utilisateur\Entite
+ * @see \LibertAPI\Tests\Units\Utilisateur\UtilisateurEntiteTest
  *
  * Ne devrait être contacté que par le UtilisateurRepository
  * Ne devrait contacter personne

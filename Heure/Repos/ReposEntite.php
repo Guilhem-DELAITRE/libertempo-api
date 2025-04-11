@@ -10,7 +10,7 @@ use LibertAPI\Tools\Exceptions\MissingArgumentException;
  * @author Wouldsmina
  *
  * @since 1.8
- * @see \LibertAPI\Tests\Units\Heure\Repos\ReposEntite
+ * @see \LibertAPI\Tests\Units\Heure\Repos\ReposEntiteTest
  *
  * Ne devrait être contacté que par le ReposRepository
  * Ne devrait contacter personne

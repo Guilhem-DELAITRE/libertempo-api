@@ -10,7 +10,7 @@ use LibertAPI\Tools\Exceptions\MissingArgumentException;
  * @author Wouldsmina <wouldsmina@gmail.com>
  *
  * @since 1.9
- * @see \LibertAPI\Tests\Units\Solde\SoldeEntite
+ * @see \LibertAPI\Tests\Units\Solde\SoldeEntiteTest
  *
  * Ne devrait être contacté que par SoldeRepository
  * Ne devrait contacter personne
