@@ -1,5 +1,6 @@
 {
     "name": "libertempo/api",
+    "description": "API pour le projet libertempo",
     "authors": [
         {
             "name": "wouldsmina",
@@ -24,23 +25,23 @@
     "license": "AGPL-3.0",
     "require": {
         "php": "8.3.*",
-        "slim/slim": "*",
-        "doctrine/dbal": "*",
-        "doctrine/orm": "*",
-        "php-di/php-di": "*",
-        "adldap2/adldap2": "*",
-        "rollbar/rollbar": "*",
-        "slim/psr7": "*",
-        "slim/http": "*",
-        "symfony/cache": "*",
+        "slim/slim": "4.*",
+        "doctrine/dbal": "4.*",
+        "doctrine/orm": "3.*",
+        "php-di/php-di": "7.*",
+        "adldap2/adldap2": "10.*",
+        "rollbar/rollbar": "4.*",
+        "slim/psr7": "1.*",
+        "slim/http": "1.*",
+        "symfony/cache": "7.*",
         "ext-pdo": "*"
     },
     "require-dev": {
-        "atoum/atoum": "*",
-        "codacy/coverage": "*",
-        "codeception/codeception": "*",
-        "docler-labs/codeception-slim-module": "*",
-        "rector/rector": "*"
+        "atoum/atoum": "4.*",
+        "codacy/coverage": "1.*",
+        "codeception/codeception": "5.*",
+        "docler-labs/codeception-slim-module": "4.*",
+        "rector/rector": "2.*"
     },
     "scripts": {
         "test": "vendor/bin/phpunit"
