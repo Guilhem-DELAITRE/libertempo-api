@@ -10,7 +10,7 @@ use LibertAPI\Tools\Libraries\AEntite;
  * @author Wouldsmina
  *
  * @since 0.1
- * @see \LibertAPI\Tests\Units\Planning\PlanningRepository
+ * @see \LibertAPI\Tests\Units\Planning\PlanningRepositoryTest
  *
  * Ne devrait être contacté que par le PlanningController
  * Ne devrait contacter que le PlanningEntite
@@ -50,7 +50,7 @@ class PlanningRepository extends \LibertAPI\Tools\Libraries\ARepository
     {
         $this->queryBuilder->setValue('name', ':name');
         $this->queryBuilder->setParameter(':name', $values['name']);
-        $this->queryBuilder->setValue('status', $values['status']);
+        $this->queryBuilder->setValue('status', (string)$values['status']);
     }
 
     /**

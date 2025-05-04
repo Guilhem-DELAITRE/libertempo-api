@@ -28,7 +28,7 @@ class TypeEntite extends \LibertAPI\Tools\Libraries\AEntite
     public function getLibelle() : string
     {
         if ('utf-8' !== strtolower(mb_detect_encoding($this->getFreshData('libelle')))) {
-            return utf8_encode($this->getFreshData('libelle'));
+            return mb_convert_encoding($this->getFreshData('libelle'), 'UTF-8', 'ISO-8859-1');
         }
 
         return $this->getFreshData('libelle');

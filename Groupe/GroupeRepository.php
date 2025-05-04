@@ -2,6 +2,7 @@
 namespace LibertAPI\Groupe;
 
 use LibertAPI\Tools\Libraries\AEntite;
+use LibertAPI\Tools\Libraries\ARepository;
 
 /**
  * {@inheritDoc}
@@ -10,12 +11,12 @@ use LibertAPI\Tools\Libraries\AEntite;
  * @author Wouldsmina
  *
  * @since 0.7
- * @see \LibertAPI\Tests\Units\Groupe\GroupeRepository
+ * @see \LibertAPI\Tests\Units\Groupe\GroupeRepositoryTest
  *
  * Ne devrait être contacté que par le GroupeController
  * Ne devrait contacter que le GroupeEntite
  */
-class GroupeRepository extends \LibertAPI\Tools\Libraries\ARepository
+class GroupeRepository extends ARepository
 {
     final protected function getEntiteClass() : string
     {
@@ -52,7 +53,7 @@ class GroupeRepository extends \LibertAPI\Tools\Libraries\ARepository
         $this->queryBuilder->setValue('g_groupename', ':name');
         $this->queryBuilder->setParameter(':name', $values['name']);
         $this->queryBuilder->setValue('g_comment', $values['comment']);
-        $this->queryBuilder->setValue('g_double_valid', $values['double_validation']);
+        $this->queryBuilder->setValue('g_double_valid', $values['double_validation'] ? 'Y': 'N');
     }
 
     final protected function setSet(array $parametres)

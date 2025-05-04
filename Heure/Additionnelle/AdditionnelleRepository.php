@@ -10,7 +10,7 @@ use LibertAPI\Tools\Libraries\AEntite;
  * @author Wouldsmina
  *
  * @since 1.8
- * @see \LibertAPI\Tests\Units\Heure\Additionnelle\AdditionnelleRepository
+ * @see \LibertAPI\Tests\Units\Heure\Additionnelle\AdditionnelleRepositoryTest
  *
  * Ne devrait être contacté que par le HeureAdditionnelleEmployeController
  * Ne devrait contacter que l' AdditionnelleEntite

@@ -1,10 +1,12 @@
-<?php declare(strict_types = 1);
+<?php declare(strict_types=1);
+
 namespace LibertAPI\Tests\Units\Utilisateur;
 
 use DomainException;
 use LibertAPI\Tests\Units\Tools\Libraries\EntiteTestCase;
 use LibertAPI\Utilisateur\UtilisateurEntite;
 use \LibertAPI\Utilisateur\UtilisateurEntite as _Entite;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
 /**
  * Classe de test du modèle de l'utilisateur
@@ -37,7 +39,7 @@ final class UtilisateurEntiteTest extends EntiteTestCase
     {
         $instance = new UtilisateurEntite([
             'token' => 'token',
-            ]);
+        ]);
 
         $this->assertNull($instance->getId());
     }
@@ -79,7 +81,7 @@ final class UtilisateurEntiteTest extends EntiteTestCase
         $entite = new UtilisateurEntite([
             'id' => 3,
             'dateLastAccess' => "0",
-            ]);
+        ]);
 
         $this->assertEquals(0, $entite->getDateLastAccess());
 
@@ -95,8 +97,7 @@ final class UtilisateurEntiteTest extends EntiteTestCase
         $instance = new UtilisateurEntite([
             'id' => 4,
             'password' => password_hash('baz', PASSWORD_DEFAULT),
-            ]);
-
+        ]);
 
         $this->assertFalse($instance->isPasswordMatching($password));
     }
@@ -108,7 +109,7 @@ final class UtilisateurEntiteTest extends EntiteTestCase
         $instance = new UtilisateurEntite([
             'id' => 4,
             'password' => password_hash($password, PASSWORD_DEFAULT),
-            ]);
+        ]);
 
         $this->assertTrue($instance->isPasswordMatching($password));
     }

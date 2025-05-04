@@ -1,6 +1,10 @@
 <?php declare(strict_types = 1);
 namespace LibertAPI\Tests\Units\Planning\Creneau;
 
+use LibertAPI\Planning\Creneau\CreneauRepository;
+use LibertAPI\Tests\Units\Tools\Libraries\RepositoryTestCase;
+use RuntimeException;
+
 /**
  * Classe de test du repository de créneau de planning
  *
@@ -9,26 +13,26 @@ namespace LibertAPI\Tests\Units\Planning\Creneau;
  *
  * @since 0.1
  */
-final class CreneauRepository extends \LibertAPI\Tests\Units\Tools\Libraries\ARepository
+final class CreneauRepositoryTest extends RepositoryTestCase
 {
+    protected string $testedClass = CreneauRepository::class;
+
     public function testGetOneEmpty()
     {
-        $this->newTestedInstance($this->connector);
-        $this->calling($this->result)->fetch = [];
+        $instance = new $this->testedClass($this->connection);
 
-        $this->exception(function () {
-            $this->testedInstance->getOne(4);
-        })->isInstanceOf(\RuntimeException::class);
+        $this->expectException(RuntimeException::class);
+
+        $instance->getOne(4);
     }
 
     public function testPutOne()
     {
-        $this->newTestedInstance($this->connector);
-        $this->calling($this->result)->fetch = [];
+        $instance = new $this->testedClass($this->connection);
 
-        $this->exception(function () {
-            $this->testedInstance->putOne(4, []);
-        })->isInstanceOf(\RuntimeException::class);
+        $this->expectException(RuntimeException::class);
+
+        $instance->putOne(4, []);
     }
 
     final protected function getStorageContent() : array
@@ -58,10 +62,10 @@ final class CreneauRepository extends \LibertAPI\Tests\Units\Tools\Libraries\ARe
 
     public function testDeleteOne()
     {
-        $this->newTestedInstance($this->connector);
+        $instance = new $this->testedClass($this->connection);
 
-        $this->exception(function () {
-            $this->testedInstance->deleteOne(111);
-        })->isInstanceOf(\RuntimeException::class);
+        $this->expectException(RuntimeException::class);
+
+        $instance->deleteOne(111);
     }
 }

@@ -1,6 +1,9 @@
 <?php declare(strict_types = 1);
 namespace LibertAPI\Tests\Units\Absence\Periode;
 
+use LibertAPI\Absence\Periode\PeriodeRepository;
+use LibertAPI\Tests\Units\Tools\Libraries\RepositoryTestCase;
+
 /**
  * Classe de test du repository des périodes d'absences
  *
@@ -9,16 +12,18 @@ namespace LibertAPI\Tests\Units\Absence\Periode;
  *
  * @since 1.6
  */
-final class PeriodeRepository extends \LibertAPI\Tests\Units\Tools\Libraries\ARepository
+final class PeriodeRepositoryTest extends RepositoryTestCase
 {
-    public function testPostOne()
+    protected string $testedClass = PeriodeRepository::class;
+
+    public function testPostOne(): void
     {
-        $this->boolean(true)->isTrue;
+        $this->assertTrue(true);
     }
 
-    public function testPutOne()
+    public function testPutOne(): void
     {
-        $this->boolean(true)->isTrue;
+        $this->assertTrue(true);
     }
 
     protected function getStorageContent() : array

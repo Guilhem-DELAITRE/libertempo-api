@@ -1,6 +1,9 @@
 <?php declare(strict_types = 1);
 namespace LibertAPI\Tests\Units\Heure\Additionnelle;
 
+use LibertAPI\Heure\Additionnelle\AdditionnelleRepository;
+use LibertAPI\Tests\Units\Tools\Libraries\RepositoryTestCase;
+
 /**
  * Classe de test du repository de l'heure de Additionnelle
  *
@@ -9,8 +12,10 @@ namespace LibertAPI\Tests\Units\Heure\Additionnelle;
  *
  * @since 1.8
  */
-final class AdditionnelleRepository extends \LibertAPI\Tests\Units\Tools\Libraries\ARepository
+final class AdditionnelleRepositoryTest extends RepositoryTestCase
 {
+    protected string $testedClass = AdditionnelleRepository::class;
+
     final protected function getStorageContent() : array
     {
         return [

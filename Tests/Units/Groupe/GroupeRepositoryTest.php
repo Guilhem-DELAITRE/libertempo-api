@@ -1,6 +1,9 @@
 <?php declare(strict_types = 1);
 namespace LibertAPI\Tests\Units\Groupe;
 
+use LibertAPI\Groupe\GroupeRepository;
+use LibertAPI\Tests\Units\Tools\Libraries\RepositoryTestCase;
+
 /**
  * Classe de test du repository de groupe
  *
@@ -9,8 +12,10 @@ namespace LibertAPI\Tests\Units\Groupe;
  *
  * @since 0.7
  */
-final class GroupeRepository extends \LibertAPI\Tests\Units\Tools\Libraries\ARepository
+final class GroupeRepositoryTest extends RepositoryTestCase
 {
+    protected string $testedClass = GroupeRepository::class;
+
     final protected function getStorageContent() : array
     {
         return [

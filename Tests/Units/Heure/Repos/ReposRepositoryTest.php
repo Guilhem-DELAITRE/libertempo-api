@@ -1,6 +1,9 @@
 <?php declare(strict_types = 1);
 namespace LibertAPI\Tests\Units\Heure\Repos;
 
+use LibertAPI\Heure\Repos\ReposRepository;
+use LibertAPI\Tests\Units\Tools\Libraries\RepositoryTestCase;
+
 /**
  * Classe de test du repository de l'heure de repos
  *
@@ -9,8 +12,10 @@ namespace LibertAPI\Tests\Units\Heure\Repos;
  *
  * @since 1.8
  */
-final class ReposRepository extends \LibertAPI\Tests\Units\Tools\Libraries\ARepository
+final class ReposRepositoryTest extends RepositoryTestCase
 {
+    protected string $testedClass = ReposRepository::class;
+
     final protected function getStorageContent() : array
     {
         return [

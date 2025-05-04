@@ -1,7 +1,10 @@
 <?php declare(strict_types = 1);
 namespace LibertAPI\Tests\Units\Utilisateur;
 
+use LibertAPI\Tests\Units\Tools\Libraries\RepositoryTestCase;
 use LibertAPI\Tools\Libraries\AEntite;
+use LibertAPI\Utilisateur\UtilisateurRepository;
+use RuntimeException;
 
 /**
  * Classe de test du repository de l'utilisateur
@@ -11,16 +14,19 @@ use LibertAPI\Tools\Libraries\AEntite;
  *
  * @since 0.2
  */
-final class UtilisateurRepository extends \LibertAPI\Tests\Units\Tools\Libraries\ARepository
+final class UtilisateurRepositoryTest extends RepositoryTestCase
 {
+    protected string $testedClass = UtilisateurRepository::class;
+
     public function testFindOk()
     {
-        $this->newTestedInstance($this->connector);
-        $this->calling($this->result)->fetchAll = [$this->getStorageContent()];
+        $instance = new $this->testedClass($this->connection);
 
-        $res = $this->testedInstance->find([]);
+        $this->result
+            ->method('fetchAllAssociative')
+            ->willReturn([$this->getStorageContent()]);
 
-        $this->string($res->getId())->isIdenticalTo('Aladdin');
+        $this->assertEquals('Aladdin', $instance->find([])->getId());
     }
 
     final protected function getStorageContent() : array
@@ -48,11 +54,11 @@ final class UtilisateurRepository extends \LibertAPI\Tests\Units\Tools\Libraries
 
     public function testPostOne()
     {
-        $this->newTestedInstance($this->connector);
+        $instance = new $this->testedClass($this->connection);
 
-        $this->exception(function () {
-            $this->testedInstance->postOne($this->getConsumerContent());
-        })->isInstanceOf(\RuntimeException::class);
+        $this->expectException(RuntimeException::class);
+
+        $instance->postOne($this->getConsumerContent());
     }
 
     protected function getConsumerContent() : array
@@ -63,10 +69,10 @@ final class UtilisateurRepository extends \LibertAPI\Tests\Units\Tools\Libraries
 
     public function testDeleteOne()
     {
-        $this->newTestedInstance($this->connector);
+        $instance = new $this->testedClass($this->connection);
 
-        $this->exception(function () {
-            $this->testedInstance->deleteOne(345);
-        })->isInstanceOf(\RuntimeException::class);
+        $this->expectException(RuntimeException::class);
+
+        $instance->deleteOne(345);
     }
 }

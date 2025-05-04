@@ -32,7 +32,8 @@
         "rollbar/rollbar": "*",
         "slim/psr7": "*",
         "slim/http": "*",
-        "symfony/cache": "*"
+        "symfony/cache": "*",
+        "ext-pdo": "*"
     },
     "require-dev": {
         "atoum/atoum": "*",
@@ -40,5 +41,8 @@
         "codeception/codeception": "*",
         "docler-labs/codeception-slim-module": "*",
         "rector/rector": "*"
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit"
     }
 }

@@ -1,6 +1,9 @@
 <?php declare(strict_types = 1);
 namespace LibertAPI\Tests\Units\Absence\Type;
 
+use LibertAPI\Absence\Type\TypeRepository;
+use LibertAPI\Tests\Units\Tools\Libraries\RepositoryTestCase;
+
 /**
  * Classe de test du repository de planning
  *
@@ -9,8 +12,10 @@ namespace LibertAPI\Tests\Units\Absence\Type;
  *
  * @since 0.5
  */
-final class TypeRepository extends \LibertAPI\Tests\Units\Tools\Libraries\ARepository
+final class TypeRepositoryTest extends RepositoryTestCase
 {
+    protected string $testedClass = TypeRepository::class;
+
     protected function getStorageContent() : array
     {
         return [

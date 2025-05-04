@@ -1,8 +1,10 @@
 <?php declare(strict_types = 1);
 namespace LibertAPI\Planning\Creneau;
 
+use LibertAPI\Tests\Units\Planning\PlanningRepositoryTest;
 use LibertAPI\Tools\Exceptions\MissingArgumentException;
 use LibertAPI\Tools\Libraries\AEntite;
+use LibertAPI\Tools\Libraries\ARepository;
 
 /**
  * {@inheritDoc}
@@ -11,9 +13,9 @@ use LibertAPI\Tools\Libraries\AEntite;
  * @author Wouldsmina
  *
  * @since 0.1
- * @see \Tests\Units\Planning\Repository
+ * @see PlanningRepositoryTest
  */
-class CreneauRepository extends \LibertAPI\Tools\Libraries\ARepository
+class CreneauRepository extends ARepository
 {
     /**
      * @inheritDoc
@@ -103,12 +105,12 @@ class CreneauRepository extends \LibertAPI\Tools\Libraries\ARepository
      */
     final protected function setValues(array $values)
     {
-        $this->queryBuilder->setValue('planning_id', (int) $values['planning_id']);
-        $this->queryBuilder->setValue('jour_id', (int) $values['jour_id']);
-        $this->queryBuilder->setValue('type_semaine', $values['type_semaine']);
-        $this->queryBuilder->setValue('type_periode', $values['type_periode']);
-        $this->queryBuilder->setValue('debut', $values['debut']);
-        $this->queryBuilder->setValue('fin', $values['fin']);
+        $this->queryBuilder->setValue('planning_id', (string)$values['planning_id']);
+        $this->queryBuilder->setValue('jour_id', (string)$values['jour_id']);
+        $this->queryBuilder->setValue('type_semaine', (string)$values['type_semaine']);
+        $this->queryBuilder->setValue('type_periode', (string)$values['type_periode']);
+        $this->queryBuilder->setValue('debut', (string)$values['debut']);
+        $this->queryBuilder->setValue('fin', (string)$values['fin']);
     }
 
     final protected function setSet(array $parametres)

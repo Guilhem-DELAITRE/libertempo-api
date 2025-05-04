@@ -1,6 +1,9 @@
 <?php declare(strict_types = 1);
 namespace LibertAPI\Tests\Units\Planning;
 
+use LibertAPI\Planning\PlanningRepository;
+use LibertAPI\Tests\Units\Tools\Libraries\RepositoryTestCase;
+
 /**
  * Classe de test du repository de planning
  *
@@ -9,8 +12,11 @@ namespace LibertAPI\Tests\Units\Planning;
  *
  * @since 0.1
  */
-final class PlanningRepository extends \LibertAPI\Tests\Units\Tools\Libraries\ARepository
+final class PlanningRepositoryTest extends RepositoryTestCase
 {
+
+    protected string $testedClass = PlanningRepository::class;
+
     final protected function getStorageContent() : array
     {
         return [

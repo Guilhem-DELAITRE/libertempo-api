@@ -1,6 +1,9 @@
 <?php declare(strict_types = 1);
 namespace LibertAPI\Tests\Units\Solde;
 
+use LibertAPI\Solde\SoldeRepository;
+use LibertAPI\Tests\Units\Tools\Libraries\RepositoryTestCase;
+
 /**
  * Classe de test du repository du solde
  *
@@ -9,8 +12,10 @@ namespace LibertAPI\Tests\Units\Solde;
  *
  * @since 1.9
  */
-final class SoldeRepository extends \LibertAPI\Tests\Units\Tools\Libraries\ARepository
+final class SoldeRepositoryTest extends RepositoryTestCase
 {
+    protected string $testedClass = SoldeRepository::class;
+
     final protected function getStorageContent() : array
     {
         return [

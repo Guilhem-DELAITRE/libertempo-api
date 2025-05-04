@@ -12,7 +12,7 @@ use LibertAPI\Tools\Exceptions\UnknownResourceException;
  * @author Wouldsmina
  *
  * @since 0.2
- * @see \LibertAPI\Tests\Units\Utilisateur\UtilisateurRepository
+ * @see \LibertAPI\Tests\Units\Utilisateur\UtilisateurRepositoryTest
  */
 class UtilisateurRepository extends \LibertAPI\Tools\Libraries\ARepository
 {
@@ -41,14 +41,12 @@ class UtilisateurRepository extends \LibertAPI\Tools\Libraries\ARepository
 
     public function getOne($id) : AEntite
     {
-        // @TODO: supprimer cette ligne quand on passera à DBAL > 2.6 : https://github.com/doctrine/dbal/commit/e937f37a8acc117047ff4ed9aec493a1e3de2195
-        $this->queryBuilder->resetQueryParts();
         $this->queryBuilder->select('*, u_login AS id');
         $this->setWhere(['u_login' => $id]);
         $this->queryBuilder->from($this->getTableName(), 'current');
-        $res = $this->queryBuilder->execute();
+        $res = $this->queryBuilder->executeQuery();
 
-        $data = $res->fetch(\PDO::FETCH_ASSOC);
+        $data = $res->fetchAssociative();
         if (empty($data)) {
             throw new UnknownResourceException('#' . $id . ' is not a valid resource');
         }
@@ -127,15 +125,14 @@ class UtilisateurRepository extends \LibertAPI\Tools\Libraries\ARepository
     public function putOne($id, array $data) : AEntite
     {
         $entite = $this->getOne($id);
-        // @TODO: supprimer cette ligne quand on passera à DBAL > 2.6 : https://github.com/doctrine/dbal/commit/e937f37a8acc117047ff4ed9aec493a1e3de2195
-        $this->queryBuilder->resetQueryParts();
+
         $entite->populate($data);
 
         $this->queryBuilder->update($this->getTableName());
         $this->setSet($this->getEntite2Storage($entite));
         $this->setWhere(['u_login' => $entite->getId()]);
 
-        $this->queryBuilder->execute();
+        $this->queryBuilder->executeQuery();
 
         return $entite;
     }
@@ -218,15 +215,13 @@ class UtilisateurRepository extends \LibertAPI\Tools\Libraries\ARepository
     public function updateDateLastAccess(UtilisateurEntite $entite) : AEntite
     {
         $entite->updateDateLastAccess();
-        // @TODO: supprimer cette ligne quand on passera à DBAL > 2.6 : https://github.com/doctrine/dbal/commit/e937f37a8acc117047ff4ed9aec493a1e3de2195
-        $this->queryBuilder->resetQueryParts();
         $this->queryBuilder->setParameters([]);
 
         $this->queryBuilder->update($this->getTableName());
         $this->setSet($this->getEntite2Storage($entite));
         $this->setWhere(['u_login' => $entite->getId()]);
 
-        $this->queryBuilder->execute();
+        $this->queryBuilder->executeQuery();
 
         return $entite;
     }
@@ -248,13 +243,11 @@ class UtilisateurRepository extends \LibertAPI\Tools\Libraries\ARepository
 
         $entite->updateDateLastAccess();
         $entite->populateToken($this->buildToken($instanceToken));
-        // @TODO: supprimer cette ligne quand on passera à DBAL > 2.6 : https://github.com/doctrine/dbal/commit/e937f37a8acc117047ff4ed9aec493a1e3de2195
-        $this->queryBuilder->resetQueryParts();
         $this->queryBuilder->update($this->getTableName());
         $this->setSet($this->getEntite2Storage($entite));
         $this->setWhere(['u_login' => $entite->getId()]);
 
-        $this->queryBuilder->execute();
+        $this->queryBuilder->executeQuery();
 
         return $entite;
     }

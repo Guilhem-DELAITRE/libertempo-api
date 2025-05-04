@@ -10,7 +10,7 @@ use LibertAPI\Tools\Libraries\AEntite;
  * @author Wouldsmina
  *
  * @since 1.8
- * @see \LibertAPI\Tests\Units\Heure\Repos\ReposRepository
+ * @see \LibertAPI\Tests\Units\Heure\Repos\ReposRepositoryTest
  *
  * Ne devrait être contacté que par le HeureReposEmployeController
  * Ne devrait contacter que le ReposEntite

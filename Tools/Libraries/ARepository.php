@@ -5,6 +5,7 @@ use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Driver;
 use Doctrine\DBAL\Query\QueryBuilder;
 use \LibertAPI\Tools\Exceptions\UnknownResourceException;
+use PDO;
 
 /**
  * Garant de la cohérence métier de l'entité en relation.
@@ -50,9 +51,9 @@ abstract class ARepository
     {
         $this->queryBuilder->select('*');
         $this->setWhere(['id' => $id]);
-        $res = $this->queryBuilder->execute();
+        $res = $this->queryBuilder->executeQuery();
 
-        $data = $res->fetch(\PDO::FETCH_ASSOC);
+        $data = $res->fetchAssociative(\PDO::FETCH_ASSOC);
         if (empty($data)) {
             throw new UnknownResourceException('#' . $id . ' is not a valid resource');
         }
@@ -72,14 +73,12 @@ abstract class ARepository
      */
     public function getList(array $parametres) : array
     {
-        // @TODO: supprimer cette ligne quand on passera à DBAL > 2.6 : https://github.com/doctrine/dbal/commit/e937f37a8acc117047ff4ed9aec493a1e3de2195
-        $this->queryBuilder->resetQueryParts();
         $this->queryBuilder->select('*');
         $this->queryBuilder->from($this->getTableName(), 'current');
         $this->setWhere($this->getParamsConsumer2Storage($parametres));
-        $res = $this->queryBuilder->execute();
+        $res = $this->queryBuilder->executeQuery();
 
-        $data = $res->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $res->fetchAllAssociative(PDO::FETCH_ASSOC);
         if (empty($data)) {
             throw new \UnexpectedValueException('No resource match with these parameters');
         }
@@ -133,7 +132,7 @@ abstract class ARepository
         $entite->populate($data);
         $this->queryBuilder->insert($this->getTableName());
         $this->setValues($this->getEntite2Storage($entite));
-        $this->queryBuilder->execute();
+        $this->queryBuilder->executeQuery();
 
         return (int) $this->storageConnector->lastInsertId();
     }
@@ -161,7 +160,7 @@ abstract class ARepository
         $this->setSet($this->getEntite2Storage($entite));
         $this->setWhere(['id', $entite->getId()]);
 
-        $this->queryBuilder->execute();
+        $this->queryBuilder->executeQuery();
 
         return $entite;
     }
@@ -195,7 +194,7 @@ abstract class ARepository
         $entite = $this->getOne($id);
         $this->queryBuilder->delete($this->getTableName());
         $this->setWhere(['id' => $entite->getId()]);
-        $res = $this->queryBuilder->execute();
+        $res = $this->queryBuilder->executeQuery();
         $entite->reset();
 
         return $res->rowCount();
@@ -209,24 +208,24 @@ abstract class ARepository
     /**
      * Initie une transaction
      */
-    final protected function beginTransaction() : bool
+    final protected function beginTransaction() : void
     {
-        return $this->storageConnector->beginTransaction();
+        $this->storageConnector->beginTransaction();
     }
 
     /**
      * Valide une transaction
      */
-    final protected function commit() : bool
+    final protected function commit() : void
     {
-        return $this->storageConnector->commit();
+        $this->storageConnector->commit();
     }
 
     /**
      * Annule une transaction
      */
-    final protected function rollback() : bool
+    final protected function rollback() : void
     {
-        return $this->storageConnector->rollBack();
+        $this->storageConnector->rollBack();
     }
 }
