@@ -22,7 +22,7 @@
             "LibertAPI\\": "."
         }
     },
-    "license": "AGPL-3.0",
+    "license": "AGPL-3.0-only",
     "require": {
         "php": "8.3.*",
         "slim/slim": "4.*",
