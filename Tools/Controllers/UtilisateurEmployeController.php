@@ -1,9 +1,10 @@
 <?php declare(strict_types = 1);
 namespace LibertAPI\Tools\Controllers;
 
+use LibertAPI\Tools\Libraries\Controller;
 use Psr\Http\Message\ServerRequestInterface as IRequest;
 use Psr\Http\Message\ResponseInterface as IResponse;
-use \Slim\Interfaces\RouterInterface as IRouter;
+use \Slim\Interfaces\RouteResolverInterface as IRouter;
 use LibertAPI\Utilisateur;
 use LibertAPI\Tools\Exceptions\UnknownResourceException;
 use Doctrine\ORM\EntityManager;
@@ -20,7 +21,7 @@ use Doctrine\ORM\EntityManager;
  * Ne devrait être contacté que par le routeur
  * Ne devrait contacter que le Utilisateur\Repository
  */
-final class UtilisateurEmployeController extends \LibertAPI\Tools\Libraries\AController
+final class UtilisateurEmployeController extends Controller
 {
     public function __construct(Utilisateur\UtilisateurRepository $repository, IRouter $router, EntityManager $entityManager)
     {

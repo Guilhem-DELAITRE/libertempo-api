@@ -4,9 +4,11 @@ namespace LibertAPI\Tools\Controllers;
 use LibertAPI\Tools\Exceptions\MissingArgumentException;
 use LibertAPI\Tools\Exceptions\UnknownResourceException;
 use LibertAPI\Tools\Interfaces;
+use LibertAPI\Tools\Libraries\Controller;
 use Psr\Http\Message\ServerRequestInterface as IRequest;
 use Psr\Http\Message\ResponseInterface as IResponse;
-use \Slim\Interfaces\RouterInterface as IRouter;
+use Slim\Interfaces\RouteParserInterface;
+use \Slim\Interfaces\RouteResolverInterface as IRouter;
 use LibertAPI\Groupe;
 use Doctrine\ORM\EntityManager;
 
@@ -21,10 +23,10 @@ use Doctrine\ORM\EntityManager;
  * Ne devrait être contacté que par le routeur
  * Ne devrait contacter que le GroupeRepository
  */
-final class GroupeController extends \LibertAPI\Tools\Libraries\AController
+final class GroupeController extends Controller
 implements Interfaces\IGetable, Interfaces\IPostable, Interfaces\IPutable, Interfaces\IDeletable
 {
-    public function __construct(Groupe\GroupeRepository $repository, IRouter $router, EntityManager $entityManager)
+    public function __construct(Groupe\GroupeRepository $repository, RouteParserInterface $router, EntityManager $entityManager)
     {
         parent::__construct($repository, $router, $entityManager);
     }
@@ -129,9 +131,10 @@ implements Interfaces\IGetable, Interfaces\IPostable, Interfaces\IPutable, Inter
 
         return $this->getResponseSuccess(
             $response,
-            $this->router->pathFor('getGroupeDetail', [
-                'groupeId' => $groupeId
-            ]),
+            $this->router->urlFor(
+                'getGroupeDetail',
+                ['groupeId' => $groupeId]
+            ),
             201
         );
     }

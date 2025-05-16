@@ -4,11 +4,15 @@ namespace LibertAPI\Tools\Controllers;
 use LibertAPI\Tools\Interfaces;
 use LibertAPI\Tools\Exceptions\MissingArgumentException;
 use LibertAPI\Tools\Exceptions\UnknownResourceException;
+use LibertAPI\Tools\Libraries\Controller;
 use Psr\Http\Message\ServerRequestInterface as IRequest;
 use Psr\Http\Message\ResponseInterface as IResponse;
-use \Slim\Interfaces\RouterInterface as IRouter;
+use Slim\Interfaces\RouteParserInterface;
+use \Slim\Interfaces\RouteResolverInterface as IRouter;
 use LibertAPI\Absence\Type;
 use Doctrine\ORM\EntityManager;
+use Slim\Routing\RouteCollector;
+use Slim\Routing\RouteParser;
 
 /**
  * Contrôleur de type d'absence
@@ -18,10 +22,10 @@ use Doctrine\ORM\EntityManager;
  *
  * @since 0.5
  */
-final class AbsenceTypeController extends \LibertAPI\Tools\Libraries\AController
+final class AbsenceTypeController extends Controller
 implements Interfaces\IGetable, Interfaces\IPostable, Interfaces\IPutable, Interfaces\IDeletable
 {
-    public function __construct(Type\TypeRepository $repository, IRouter $router, EntityManager $entityManager)
+    public function __construct(Type\TypeRepository $repository, RouteParserInterface $router, EntityManager $entityManager)
     {
         parent::__construct($repository, $router, $entityManager);
     }
@@ -127,9 +131,10 @@ implements Interfaces\IGetable, Interfaces\IPostable, Interfaces\IPutable, Inter
 
         return $this->getResponseSuccess(
             $response,
-            $this->router->pathFor('getAbsenceTypeDetail', [
-                'typeId' => $typeId
-            ]),
+            $this->router->urlFor(
+                'getAbsenceTypeDetail',
+                ['typeId' => $typeId]
+            ),
             201
         );
     }

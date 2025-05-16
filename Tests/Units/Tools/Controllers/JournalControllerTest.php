@@ -1,7 +1,13 @@
 <?php declare(strict_types = 1);
 namespace LibertAPI\Tests\Units\Tools\Controllers;
 
+use Exception;
+use LibertAPI\Journal\JournalEntite;
+use LibertAPI\Journal\JournalRepository;
+use LibertAPI\Tests\Units\Tools\Libraries\ControllerTestCase;
+use LibertAPI\Tools\Controllers\JournalController;
 use LibertAPI\Utilisateur\UtilisateurEntite;
+use UnexpectedValueException;
 
 /**
  * Classe de test du contrôleur de journal
@@ -11,16 +17,16 @@ use LibertAPI\Utilisateur\UtilisateurEntite;
  *
  * @since 0.5
  */
-final class JournalController extends \LibertAPI\Tests\Units\Tools\Libraries\AController
+final class JournalControllerTest extends ControllerTestCase
 {
+    protected string $testedClass = JournalController::class;
+
     /**
      * {@inheritdoc}
      */
     protected function initRepository()
     {
-        $this->mockGenerator->orphanize('__construct');
-        $this->mockGenerator->shuntParentClassCalls();
-        $this->repository = new \mock\LibertAPI\Journal\JournalRepository();
+        $this->repository = $this->createMock(JournalRepository::class);
     }
 
     /**
@@ -28,7 +34,7 @@ final class JournalController extends \LibertAPI\Tests\Units\Tools\Libraries\ACo
      */
     protected function initEntite()
     {
-        $this->entite = new \LibertAPI\Journal\JournalEntite([
+        $this->entite = new JournalEntite([
             'id' => 42,
             'numeroPeriode' => 88,
             'utilisateurActeur' => '4',
@@ -48,20 +54,27 @@ final class JournalController extends \LibertAPI\Tests\Units\Tools\Libraries\ACo
      */
     public function testGetFound()
     {
-        $this->calling($this->request)->getQueryParams = [];
-        $this->calling($this->repository)->getList = [$this->entite,];
-        $this->newTestedInstance($this->repository, $this->router, $this->entityManager);
+        $this->request
+            ->method('getQueryParams')
+            ->willReturn([]);
+
+        $this->repository
+            ->method('getList')
+            ->willReturn([$this->entite]);
+
+        $this->newTestedInstance();
+
         $response = $this->testedInstance->get($this->request, $this->response, []);
+
         $data = $this->getJsonDecoded($response->getBody());
 
-        $this->integer($response->getStatusCode())->isIdenticalTo(200);
-        $this->array($data)
-            ->integer['code']->isIdenticalTo(200)
-            ->string['status']->isIdenticalTo('success')
-            ->string['message']->isIdenticalTo('OK')
-            //->array['data']->hasSize(1) // TODO: l'asserter atoum en sucre syntaxique est buggé, faire un ticket
-        ;
-        $this->array($data['data'][0])->hasKey('id');
+        $this->assertEquals(200, $response->getStatusCode());
+
+        $this->assertEquals(200, $data['code']);
+        $this->assertEquals('success', $data['status']);
+        $this->assertEquals('OK', $data['message']);
+        $this->assertCount(1, $data['data']);
+        $this->arrayHasKey('id', $data['data'][0]);
     }
 
     /**
@@ -69,11 +82,16 @@ final class JournalController extends \LibertAPI\Tests\Units\Tools\Libraries\ACo
      */
     public function testGetNotFound()
     {
-        $this->calling($this->request)->getQueryParams = [];
-        $this->calling($this->repository)->getList = function () {
-            throw new \UnexpectedValueException('');
-        };
-        $this->newTestedInstance($this->repository, $this->router, $this->entityManager);
+        $this->request
+            ->method('getQueryParams')
+            ->willReturn([]);
+
+        $this->repository
+            ->method('getList')
+            ->willReturnCallback(fn () => throw new UnexpectedValueException(''));
+
+        $this->newTestedInstance();
+
         $response = $this->testedInstance->get($this->request, $this->response, []);
 
         $this->assertSuccessEmpty($response);
@@ -84,13 +102,18 @@ final class JournalController extends \LibertAPI\Tests\Units\Tools\Libraries\ACo
      */
     public function testGetFallback()
     {
-        $this->calling($this->request)->getQueryParams = [];
-        $this->calling($this->repository)->getList = function () {
-            throw new \Exception('');
-        };
-        $this->newTestedInstance($this->repository, $this->router, $this->entityManager);
+        $this->request
+            ->method('getQueryParams')
+            ->willReturn([]);
+
+        $this->repository
+            ->method('getList')
+            ->willReturnCallback(fn () => throw new Exception('e'));
+
+        $this->newTestedInstance();
 
         $response = $this->testedInstance->get($this->request, $this->response, []);
+
         $this->assertError($response);
     }
 }

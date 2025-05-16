@@ -1,7 +1,11 @@
 <?php declare(strict_types = 1);
 namespace LibertAPI\Tests\Units\Tools\Controllers;
 
+use Exception;
 use LibertAPI\Groupe\Responsable\ResponsableEntite;
+use LibertAPI\Groupe\Responsable\ResponsableRepository;
+use LibertAPI\Tests\Units\Tools\Libraries\ControllerTestCase;
+use LibertAPI\Tools\Controllers\GroupeResponsableController;
 
 /**
  * Classe de test du contrôleur de responsable de groupe
@@ -11,16 +15,16 @@ use LibertAPI\Groupe\Responsable\ResponsableEntite;
  *
  * @since 0.7
  */
-final class GroupeResponsableController extends \LibertAPI\Tests\Units\Tools\Libraries\AController
+final class GroupeResponsableControllerTest extends ControllerTestCase
 {
+    protected string $testedClass = GroupeResponsableController::class;
+
     /**
      * {@inheritdoc}
      */
     protected function initRepository()
     {
-        $this->mockGenerator->orphanize('__construct');
-        $this->mockGenerator->shuntParentClassCalls();
-        $this->repository = new \mock\LibertAPI\Groupe\Responsable\ResponsableRepository();
+        $this->repository = $this->createMock(ResponsableRepository::class);
     }
 
     /**
@@ -44,20 +48,27 @@ final class GroupeResponsableController extends \LibertAPI\Tests\Units\Tools\Lib
      */
     public function testGetFound()
     {
-        $this->calling($this->request)->getQueryParams = [];
-        $this->calling($this->repository)->getList = [$this->entite,];
-        $this->newTestedInstance($this->repository, $this->router, $this->entityManager);
+        $this->request
+            ->method('getQueryParams')
+            ->willReturn([]);
+
+        $this->repository
+            ->method('getList')
+            ->willReturn([$this->entite]);
+
+        $this->newTestedInstance();
+
         $response = $this->testedInstance->get($this->request, $this->response, []);
+
         $data = $this->getJsonDecoded($response->getBody());
 
-        $this->integer($response->getStatusCode())->isIdenticalTo(200);
-        $this->array($data)
-            ->integer['code']->isIdenticalTo(200)
-            ->string['status']->isIdenticalTo('success')
-            ->string['message']->isIdenticalTo('OK')
-            //->array['data']->hasSize(1) // TODO: l'asserter atoum en sucre syntaxique est buggé, faire un ticket
-        ;
-        $this->array($data['data'][0])->hasKey('login');
+        $this->assertEquals(200, $response->getStatusCode());
+
+        $this->assertEquals(200, $data['code']);
+        $this->assertEquals('success', $data['status']);
+        $this->assertEquals('OK', $data['message']);
+        $this->assertCount(1, $data['data']);
+        $this->arrayHasKey('login', $data['data']);
     }
 
     /**
@@ -65,11 +76,16 @@ final class GroupeResponsableController extends \LibertAPI\Tests\Units\Tools\Lib
      */
     public function testGetNotFound()
     {
-        $this->calling($this->request)->getQueryParams = [];
-        $this->calling($this->repository)->getList = function () {
-            throw new \UnexpectedValueException('');
-        };
-        $this->newTestedInstance($this->repository, $this->router, $this->entityManager);
+        $this->request
+            ->method('getQueryParams')
+            ->willReturn([]);
+
+        $this->repository
+            ->method('getList')
+            ->willReturnCallback(fn () => throw new \UnexpectedValueException(''));
+
+        $this->newTestedInstance();
+
         $response = $this->testedInstance->get($this->request, $this->response, []);
 
         $this->assertSuccessEmpty($response);
@@ -80,13 +96,18 @@ final class GroupeResponsableController extends \LibertAPI\Tests\Units\Tools\Lib
      */
     public function testGetFallback()
     {
-        $this->calling($this->request)->getQueryParams = [];
-        $this->calling($this->repository)->getList = function () {
-            throw new \Exception('');
-        };
-        $this->newTestedInstance($this->repository, $this->router, $this->entityManager);
+        $this->request
+            ->method('getQueryParams')
+            ->willReturn([]);
+
+        $this->repository
+            ->method('getList')
+            ->willReturnCallback(fn () => throw new Exception('e'));
+
+        $this->newTestedInstance();
 
         $response = $this->testedInstance->get($this->request, $this->response, []);
+
         $this->assertError($response);
     }
 }

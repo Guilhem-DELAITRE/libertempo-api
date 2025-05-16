@@ -2,9 +2,10 @@
 namespace LibertAPI\Tools\Controllers;
 
 use LibertAPI\Tools\Interfaces;
+use LibertAPI\Tools\Libraries\Controller;
 use Psr\Http\Message\ServerRequestInterface as IRequest;
 use Psr\Http\Message\ResponseInterface as IResponse;
-use \Slim\Interfaces\RouterInterface as IRouter;
+use \Slim\Interfaces\RouteResolverInterface as IRouter;
 use LibertAPI\Heure\Additionnelle;
 use Doctrine\ORM\EntityManager;
 
@@ -16,7 +17,7 @@ use Doctrine\ORM\EntityManager;
  *
  * @since 1.8
  */
-final class HeureAdditionnelleEmployeController extends \LibertAPI\Tools\Libraries\AController
+final class HeureAdditionnelleEmployeController extends Controller
 implements Interfaces\IGetable
 {
     public function __construct(Additionnelle\AdditionnelleRepository $repository, IRouter $router, EntityManager $entityManager)

@@ -2,9 +2,11 @@
 namespace LibertAPI\Tools\Controllers;
 
 use LibertAPI\Tools\Interfaces;
+use LibertAPI\Tools\Libraries\Controller;
 use Psr\Http\Message\ServerRequestInterface as IRequest;
 use Psr\Http\Message\ResponseInterface as IResponse;
-use \Slim\Interfaces\RouterInterface as IRouter;
+use Slim\Interfaces\RouteParserInterface;
+use \Slim\Interfaces\RouteResolverInterface as IRouter;
 use LibertAPI\Groupe\Employe;
 use Doctrine\ORM\EntityManager;
 
@@ -19,10 +21,10 @@ use Doctrine\ORM\EntityManager;
  * Ne devrait être contacté que par le routeur
  * Ne devrait contacter que le EmployeRepository
  */
-final class GroupeEmployeController extends \LibertAPI\Tools\Libraries\AController
+final class GroupeEmployeController extends Controller
 implements Interfaces\IGetable
 {
-    public function __construct(Employe\EmployeRepository $repository, IRouter $router, EntityManager $entityManager)
+    public function __construct(Employe\EmployeRepository $repository, RouteParserInterface $router, EntityManager $entityManager)
     {
         parent::__construct($repository, $router, $entityManager);
     }

@@ -10,7 +10,7 @@ use LibertAPI\Tools\Libraries\AEntite;
  * @author Wouldsmina
  *
  * @since 1.6
- * @see \Tests\Units\Absence\Periode\PeriodeRepository
+ * @see \LibertAPI\Tests\Units\Absence\Periode\PeriodeRepository
  */
 class PeriodeRepository extends \LibertAPI\Tools\Libraries\ARepository
 {

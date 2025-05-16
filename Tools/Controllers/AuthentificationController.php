@@ -1,12 +1,13 @@
 <?php declare(strict_types = 1);
 namespace LibertAPI\Tools\Controllers;
 
+use LibertAPI\Tools\Libraries\Controller;
 use LibertAPI\Utilisateur\UtilisateurRepository;
 use LibertAPI\Tools\Exceptions\BadRequestException;
 use LibertAPI\Tools\Exceptions\AuthentificationFailedException;
 use LibertAPI\Tools\Libraries\StorageConfiguration;
 use LibertAPI\Tools\Services\AAuthentifierFactoryService;
-use Slim\Interfaces\RouterInterface as IRouter;
+use Slim\Interfaces\RouteResolverInterface as IRouter;
 use LibertAPI\Tools\Interfaces;
 use Psr\Http\Message\ServerRequestInterface as IRequest;
 use Psr\Http\Message\ResponseInterface as IResponse;
@@ -22,7 +23,7 @@ use Doctrine\ORM\EntityManager;
  *
  * @since 0.2
  */
-final class AuthentificationController extends \LibertAPI\Tools\Libraries\AController
+final class AuthentificationController extends Controller
 implements Interfaces\IGetable
 {
     public function __construct(UtilisateurRepository $repository, IRouter $router, StorageConfiguration $configuration, EntityManager $entityManager)

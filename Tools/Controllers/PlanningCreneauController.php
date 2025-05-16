@@ -3,9 +3,11 @@ namespace LibertAPI\Tools\Controllers;
 
 use LibertAPI\Tools\Exceptions\MissingArgumentException;
 use LibertAPI\Tools\Interfaces;
+use LibertAPI\Tools\Libraries\Controller;
 use Psr\Http\Message\ServerRequestInterface as IRequest;
 use Psr\Http\Message\ResponseInterface as IResponse;
-use \Slim\Interfaces\RouterInterface as IRouter;
+use Slim\Interfaces\RouteParserInterface;
+use \Slim\Interfaces\RouteResolverInterface as IRouter;
 use LibertAPI\Planning\Creneau;
 use LibertAPI\Tools\Exceptions\UnknownResourceException;
 use Doctrine\ORM\EntityManager;
@@ -21,10 +23,10 @@ use Doctrine\ORM\EntityManager;
  * Ne devrait être contacté que par le routeur
  * Ne devrait contacter que le Planning\Repository
  */
-final class PlanningCreneauController extends \LibertAPI\Tools\Libraries\AController
+final class PlanningCreneauController extends Controller
 implements Interfaces\IGetable, Interfaces\IPostable, Interfaces\IPutable
 {
-    public function __construct(Creneau\CreneauRepository $repository, IRouter $router, EntityManager $entityManager)
+    public function __construct(Creneau\CreneauRepository $repository, RouteParserInterface $router, EntityManager $entityManager)
     {
         parent::__construct($repository, $router, $entityManager);
     }
@@ -127,10 +129,13 @@ implements Interfaces\IGetable, Interfaces\IPostable, Interfaces\IPutable
             $creneauxIds = $this->repository->postList($body, new Creneau\CreneauEntite([]));
             $dataMessage = [];
             foreach ($creneauxIds as $id) {
-                $dataMessage[] = $this->router->pathFor('getPlanningCreneauDetail', [
-                    'creneauId' => $id,
-                    'planningId' => $planningId,
-                ]);
+                $dataMessage[] = $this->router->urlFor(
+                    'getPlanningCreneauDetail',
+                    [
+                        'creneauId' => $id,
+                        'planningId' => $planningId,
+                    ]
+                );
             }
         } catch (MissingArgumentException $e) {
             return $this->getResponseMissingArgument($response);

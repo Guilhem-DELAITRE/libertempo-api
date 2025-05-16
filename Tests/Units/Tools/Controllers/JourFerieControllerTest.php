@@ -1,6 +1,10 @@
 <?php declare(strict_types = 1);
 namespace LibertAPI\Tests\Units\Tools\Controllers;
 
+use LibertAPI\JourFerie\JourFerieEntite;
+use LibertAPI\JourFerie\JourFerieRepository;
+use LibertAPI\Tests\Units\Tools\Libraries\RestControllerTestCase;
+use LibertAPI\Tools\Controllers\JourFerieController;
 use Psr\Http\Message\ResponseInterface as IResponse;
 
 /**
@@ -11,15 +15,16 @@ use Psr\Http\Message\ResponseInterface as IResponse;
  *
  * @since 1.0
  */
-final class JourFerieController extends \LibertAPI\Tests\Units\Tools\Libraries\ARestController
+final class JourFerieControllerTest extends RestControllerTestCase
 {
+    protected string $testedClass = JourFerieController::class;
+
     /**
      * {@inheritdoc}
      */
     protected function initRepository()
     {
-        $this->mockGenerator->orphanize('__construct');
-        $this->repository = new \mock\LibertAPI\JourFerie\JourFerieRepository();
+        $this->repository = $this->createMock(JourFerieRepository::class);
     }
 
     /**
@@ -27,8 +32,7 @@ final class JourFerieController extends \LibertAPI\Tests\Units\Tools\Libraries\A
      */
     protected function initEntite()
     {
-        $this->mockGenerator->orphanize('__construct');
-        $this->entite = new \LibertAPI\JourFerie\JourFerieEntite([
+        $this->entite = new JourFerieEntite([
             'id' => 78,
             'date' => '2018-06-12',
         ]);
@@ -39,7 +43,7 @@ final class JourFerieController extends \LibertAPI\Tests\Units\Tools\Libraries\A
      */
     public function testGetOneFound()
     {
-        $this->boolean(true)->isTrue();
+        $this->assertTrue(true);
     }
 
     /**
@@ -47,7 +51,7 @@ final class JourFerieController extends \LibertAPI\Tests\Units\Tools\Libraries\A
      */
     public function testGetOneNotFound()
     {
-        $this->boolean(true)->isTrue();
+        $this->assertTrue(true);
     }
 
     /**
@@ -55,7 +59,7 @@ final class JourFerieController extends \LibertAPI\Tests\Units\Tools\Libraries\A
      */
     public function testGetOneFallback()
     {
-        $this->boolean(true)->isTrue();
+        $this->assertTrue(true);
     }
 
     /**

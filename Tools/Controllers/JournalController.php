@@ -1,9 +1,11 @@
 <?php declare(strict_types = 1);
 namespace LibertAPI\Tools\Controllers;
 
+use LibertAPI\Tools\Libraries\Controller;
 use Psr\Http\Message\ServerRequestInterface as IRequest;
 use Psr\Http\Message\ResponseInterface as IResponse;
-use \Slim\Interfaces\RouterInterface as IRouter;
+use Slim\Interfaces\RouteParserInterface;
+use \Slim\Interfaces\RouteResolverInterface as IRouter;
 use LibertAPI\Journal;
 use Doctrine\ORM\EntityManager;
 
@@ -16,9 +18,9 @@ use Doctrine\ORM\EntityManager;
  * @since 0.5
  * @see \LibertAPI\Tests\Units\Journal\JournalController
  */
-final class JournalController extends \LibertAPI\Tools\Libraries\AController
+final class JournalController extends Controller
 {
-    public function __construct(Journal\JournalRepository $repository, IRouter $router, EntityManager $entityManager)
+    public function __construct(Journal\JournalRepository $repository, RouteParserInterface $router, EntityManager $entityManager)
     {
         parent::__construct($repository, $router, $entityManager);
     }

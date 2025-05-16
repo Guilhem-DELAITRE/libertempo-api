@@ -4,9 +4,11 @@ namespace LibertAPI\Tools\Controllers;
 use LibertAPI\Tools\Exceptions\MissingArgumentException;
 use LibertAPI\Tools\Exceptions\UnknownResourceException;
 use LibertAPI\Tools\Interfaces;
+use LibertAPI\Tools\Libraries\Controller;
 use Psr\Http\Message\ServerRequestInterface as IRequest;
 use Psr\Http\Message\ResponseInterface as IResponse;
-use \Slim\Interfaces\RouterInterface as IRouter;
+use Slim\Interfaces\RouteParserInterface;
+use \Slim\Interfaces\RouteResolverInterface as IRouter;
 use LibertAPI\Planning;
 use Doctrine\ORM\EntityManager;
 
@@ -21,10 +23,10 @@ use Doctrine\ORM\EntityManager;
  * Ne devrait être contacté que par le routeur
  * Ne devrait contacter que le PlanningRepository
  */
-final class PlanningController extends \LibertAPI\Tools\Libraries\AController
+final class PlanningController extends Controller
 implements Interfaces\IGetable, Interfaces\IPostable, Interfaces\IPutable, Interfaces\IDeletable
 {
-    public function __construct(Planning\PlanningRepository $repository, IRouter $router, EntityManager $entityManager)
+    public function __construct(Planning\PlanningRepository $repository, RouteParserInterface $router, EntityManager $entityManager)
     {
         parent::__construct($repository, $router, $entityManager);
     }
@@ -128,9 +130,10 @@ implements Interfaces\IGetable, Interfaces\IPostable, Interfaces\IPutable, Inter
 
         return $this->getResponseSuccess(
             $response,
-            $this->router->pathFor('getPlanningDetail', [
-                'planningId' => $planningId
-            ]),
+            $this->router->urlFor(
+                'getPlanningDetail',
+                ['planningId' => $planningId]
+            ),
             201
         );
     }

@@ -2,7 +2,9 @@
 namespace LibertAPI\Tools\Controllers;
 
 use LibertAPI\Tools\Interfaces;
-use \Slim\Interfaces\RouterInterface as IRouter;
+use LibertAPI\Tools\Libraries\Controller;
+use Slim\Interfaces\RouteParserInterface;
+use \Slim\Interfaces\RouteResolverInterface as IRouter;
 use Psr\Http\Message\ServerRequestInterface as IRequest;
 use Psr\Http\Message\ResponseInterface as IResponse;
 use LibertAPI\Groupe\GrandResponsable;
@@ -19,10 +21,10 @@ use Doctrine\ORM\EntityManager;
  * Ne devrait être contacté que par le routeur
  * Ne devrait contacter que le GrandResponsableRepository
  */
-final class GroupeGrandResponsableController extends \LibertAPI\Tools\Libraries\AController
+final class GroupeGrandResponsableController extends Controller
 implements Interfaces\IGetable
 {
-    public function __construct(GrandResponsable\GrandResponsableRepository $repository, IRouter $router, EntityManager $entityManager)
+    public function __construct(GrandResponsable\GrandResponsableRepository $repository, RouteParserInterface $router, EntityManager $entityManager)
     {
         parent::__construct($repository, $router, $entityManager);
     }

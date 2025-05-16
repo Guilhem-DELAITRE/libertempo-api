@@ -10,7 +10,7 @@ use LibertAPI\Tools\Libraries\AEntite;
  * @author Wouldsmina
  *
  * @since 0.5
- * @see \Tests\Units\Absence\Type\TypeRepository
+ * @see \LibertAPI\Tests\Units\Absence\Type\TypeRepository
  */
 class TypeRepository extends \LibertAPI\Tools\Libraries\ARepository
 {

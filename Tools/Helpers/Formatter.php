@@ -5,7 +5,7 @@ namespace LibertAPI\Tools\Helpers;
  * Formatage de petits utilitaires
  *
  * @since 0.1
- * @see \Tests\Units\Tools\Helpers\Formatter
+ * @see \LibertAPI\Tests\Units\Tools\Helpers\Formatter
  */
 class Formatter
 {

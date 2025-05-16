@@ -1,11 +1,10 @@
 <?php declare(strict_types = 1);
 namespace LibertAPI\Tools\Libraries;
 
-use LibertAPI\Tools\Libraries\ARepository;
-use LibertAPI\Tools\Libraries\AEntite;
+use Exception;
+use Slim\Interfaces\RouteParserInterface;
 use \Slim\Interfaces\RouterInterface as IRouter;
 use Psr\Http\Message\ResponseInterface as IResponse;
-use Psr\Http\Message\ServerRequestInterface as IRequest;
 use Doctrine\ORM\EntityManager;
 
 /**
@@ -19,7 +18,7 @@ use Doctrine\ORM\EntityManager;
  * Ne devrait être contacté par personne
  * Ne devrait contacter personne
  */
-abstract class AController
+abstract class Controller
 {
     /**
      * @var ARepository Repository de la ressource
@@ -27,16 +26,16 @@ abstract class AController
     protected $repository;
 
     /**
-     * @var IRouter Routeur de l'application
+     * @var RouteParserInterface Routeur de l'application
      */
-    protected $router;
+    protected RouteParserInterface $router;
 
     /**
      * @var EntityManager
      */
-    protected $entityManager;
+    protected EntityManager $entityManager;
 
-    public function __construct(ARepository $repository, IRouter $router, EntityManager $entityManager)
+    public function __construct(ARepository $repository, RouteParserInterface $router, EntityManager $entityManager)
     {
         $this->repository = $repository;
         $this->router = $router;
@@ -61,11 +60,11 @@ abstract class AController
      * Retourne une réponse d'erreur normalisée
      *
      * @param IResponse $response Réponse Http
-     * @param \Exception $e Cas d'échec
+     * @param Exception $e Cas d'échec
      *
      * @return IResponse
      */
-    final protected function getResponseError(IResponse $response, \Exception $e) : IResponse
+    final protected function getResponseError(IResponse $response, Exception $e) : IResponse
     {
         return $this->getResponse($response, $e->getMessage(), 500, 'error');
     }
@@ -99,13 +98,13 @@ abstract class AController
      * Retourne une réponse normalisée d'argument en bad domaine
      *
      * @param IResponse $response Réponse Http
-     * @param \Exception $e Tableau des champs en erreur jsonEncodé
+     * @param Exception $e Tableau des champs en erreur jsonEncodé
      *
      * @return IResponse
      */
-    final protected function getResponseBadDomainArgument(IResponse $response, \Exception $e) : IResponse
+    final protected function getResponseBadDomainArgument(IResponse $response, Exception $e) : IResponse
     {
-        return $this->getResponseFail($response, json_decode($e->getMessage(), true), 412);
+        return $this->getResponseFail($response, $e->getMessage(), 412);
     }
 
     /**

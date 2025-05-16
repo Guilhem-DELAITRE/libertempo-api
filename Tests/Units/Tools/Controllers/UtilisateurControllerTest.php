@@ -1,8 +1,11 @@
 <?php declare(strict_types = 1);
 namespace LibertAPI\Tests\Units\Tools\Controllers;
 
+use LibertAPI\Tests\Units\Tools\Libraries\RestControllerTestCase;
+use LibertAPI\Tools\Controllers\UtilisateurController;
+use LibertAPI\Utilisateur\UtilisateurEntite;
+use LibertAPI\Utilisateur\UtilisateurRepository;
 use Psr\Http\Message\ResponseInterface as IResponse;
-use \LibertAPI\Tools\Exceptions\UnknownResourceException;
 
 /**
  * Classe de test du contrôleur de l'utilisateur
@@ -12,26 +15,16 @@ use \LibertAPI\Tools\Exceptions\UnknownResourceException;
  *
  * @since 1.6
  */
-final class UtilisateurController extends \LibertAPI\Tests\Units\Tools\Libraries\ARestController
+final class UtilisateurControllerTest extends RestControllerTestCase
 {
-    /**
-     * @var \LibertAPI\Tools\Libraries\ARepository Mock du repository associé
-     */
-    protected $repository;
-
-    /**
-     * @var \LibertAPI\Tools\Libraries\AEntite Mock de l'entité associée
-     */
-    protected $entite;
+    protected string $testedClass = UtilisateurController::class;
 
     /**
      * {@inheritdoc}
      */
     protected function initRepository()
     {
-        $this->mockGenerator->orphanize('__construct');
-        $this->mockGenerator->shuntParentClassCalls();
-        $this->repository = new \mock\LibertAPI\Utilisateur\UtilisateurRepository();
+        $this->repository = $this->createMock(UtilisateurRepository::class);
     }
 
     /**
@@ -39,7 +32,7 @@ final class UtilisateurController extends \LibertAPI\Tests\Units\Tools\Libraries
      */
     protected function initEntite()
     {
-        $this->entite = new \LibertAPI\Utilisateur\UtilisateurEntite([
+        $this->entite = new UtilisateurEntite([
             'id' => 42,
             'login' => 'I.Gadget',
             'nom' => 'Gadget',

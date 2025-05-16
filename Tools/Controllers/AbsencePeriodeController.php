@@ -3,9 +3,11 @@ namespace LibertAPI\Tools\Controllers;
 
 use LibertAPI\Tools\Interfaces;
 use LibertAPI\Tools\Exceptions\UnknownResourceException;
+use LibertAPI\Tools\Libraries\Controller;
 use Psr\Http\Message\ServerRequestInterface as IRequest;
 use Psr\Http\Message\ResponseInterface as IResponse;
-use \Slim\Interfaces\RouterInterface as IRouter;
+use Slim\Interfaces\RouteParserInterface;
+use Slim\Interfaces\RouteResolverInterface;
 use LibertAPI\Absence\Periode;
 use Doctrine\ORM\EntityManager;
 
@@ -17,10 +19,10 @@ use Doctrine\ORM\EntityManager;
  *
  * @since 1.6
  */
-final class AbsencePeriodeController extends \LibertAPI\Tools\Libraries\AController
+final class AbsencePeriodeController extends Controller
 implements Interfaces\IGetable
 {
-    public function __construct(Periode\PeriodeRepository $repository, IRouter $router, EntityManager $entityManager)
+    public function __construct(Periode\PeriodeRepository $repository, RouteParserInterface $router, EntityManager $entityManager)
     {
         parent::__construct($repository, $router, $entityManager);
     }
@@ -33,6 +35,7 @@ implements Interfaces\IGetable
         if (!isset($arguments['periodeId'])) {
             return $this->getList($request, $response);
         }
+
         return $this->getOne($response, (int) $arguments['periodeId']);
     }
 

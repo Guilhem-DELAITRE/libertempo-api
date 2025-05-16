@@ -1,8 +1,11 @@
 <?php declare(strict_types = 1);
 namespace LibertAPI\Tests\Units\Tools\Controllers;
 
+use LibertAPI\Absence\Periode\PeriodeEntite;
+use LibertAPI\Absence\Periode\PeriodeRepository;
+use LibertAPI\Tests\Units\Tools\Libraries\RestControllerTestCase;
+use LibertAPI\Tools\Controllers\AbsencePeriodeController;
 use Psr\Http\Message\ResponseInterface as IResponse;
-use LibertAPI\Tools\Exceptions\UnknownResourceException;
 
 /**
  * Classe de test de période d'absence
@@ -12,24 +15,23 @@ use LibertAPI\Tools\Exceptions\UnknownResourceException;
  *
  * @since 1.6
  */
-final class AbsencePeriodeController extends \LibertAPI\Tests\Units\Tools\Libraries\ARestController
+final class AbsencePeriodeControllerTest extends RestControllerTestCase
 {
+    protected string $testedClass = AbsencePeriodeController::class;
     /**
      * {@inheritdoc}
      */
     protected function initRepository()
     {
-        $this->mockGenerator->orphanize('__construct');
-        $this->repository = new \mock\LibertAPI\Absence\Periode\PeriodeRepository();
+        $this->repository = $this->createMock(PeriodeRepository::class);
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function initEntite()
+    protected function initEntite(): void
     {
-        $this->mockGenerator->orphanize('__construct');
-        $this->entite = new \LibertAPI\Absence\Periode\PeriodeEntite([
+        $this->entite = new PeriodeEntite([
             'id' => 17845,
             'login' => 'Donatello',
             'date_deb' => '2018-12-25',
@@ -51,6 +53,8 @@ final class AbsencePeriodeController extends \LibertAPI\Tests\Units\Tools\Librar
 
     protected function getOne() : IResponse
     {
+        $this->newTestedInstance();
+
         return $this->testedInstance->get($this->request, $this->response, ['periodeId' => 99]);
     }
 
