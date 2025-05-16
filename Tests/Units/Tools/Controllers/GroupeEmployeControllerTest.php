@@ -1,12 +1,13 @@
 <?php declare(strict_types = 1);
 namespace LibertAPI\Tests\Units\Tools\Controllers;
 
-use _PHPStan_ea7072c0a\Nette\UnexpectedValueException;
+
 use Exception;
 use LibertAPI\Groupe\Employe\EmployeEntite;
 use LibertAPI\Groupe\Employe\EmployeRepository;
 use LibertAPI\Tests\Units\Tools\Libraries\ControllerTestCase;
 use LibertAPI\Tools\Controllers\GroupeEmployeController;
+use UnexpectedValueException;
 
 /**
  * Classe de test du contrôleur d'un employé de groupe
@@ -82,7 +83,7 @@ final class GroupeEmployeControllerTest extends ControllerTestCase
 
         $this->repository
             ->method('getList')
-            ->willReturnCallback(fn () => throw new UnexpectedValueException(''));
+            ->willReturnCallback(fn () => throw new UnexpectedValueException('e'));
 
         $this->newTestedInstance();
 

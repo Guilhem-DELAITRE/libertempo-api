@@ -1,7 +1,7 @@
 <?php declare(strict_types = 1);
 namespace LibertAPI\Tests\Units\Tools\Controllers;
 
-use _PHPStan_ea7072c0a\Nette\Neon\Exception;
+use Exception;
 use LibertAPI\Groupe\GrandResponsable\GrandResponsableEntite;
 use LibertAPI\Groupe\GrandResponsable\GrandResponsableRepository;
 use LibertAPI\Tests\Units\Tools\Libraries\ControllerTestCase;

@@ -1,11 +1,12 @@
 <?php declare(strict_types = 1);
 namespace LibertAPI\Tests\Units\Tools\Libraries;
 
-use _PHPStan_ea7072c0a\Nette\UnexpectedValueException;
+
 use Exception;
 use LibertAPI\Utilisateur\UtilisateurEntite;
 use Psr\Http\Message\ResponseInterface as IResponse;
 use \LibertAPI\Tools\Exceptions\UnknownResourceException;
+use UnexpectedValueException;
 
 /**
  * Classe de base des tests sur les contrôleurs REST
@@ -115,7 +116,7 @@ abstract class RestControllerTestCase extends ControllerTestCase
 
         $this->repository
             ->method('getList')
-            ->willReturnCallback(fn () => throw new UnexpectedValueException(''));
+            ->willReturnCallback(fn () => throw new UnexpectedValueException('e'));
 
         $this->newTestedInstance();
 
