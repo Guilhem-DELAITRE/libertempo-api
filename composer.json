@@ -45,6 +45,6 @@
         "codeception/module-rest": "^3.4"
     },
     "scripts": {
-        "test": "vendor/bin/phpunit"
+        "test": "make test"
     }
 }
