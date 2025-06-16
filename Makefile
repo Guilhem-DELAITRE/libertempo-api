@@ -39,7 +39,7 @@ patch:  ## Monte la version patch du logiciel
 test: test-unit test-functional ## Lance tous les tests applicatifs
 
 test-unit: ## Lance les tests unitaires
-	vendor/bin/atoum -ulr
+	php vendor/bin/phpunit
 
 test-functional: ## Lance les tests fonctionnels
 	cp Tests/Functionals/_data/database.sqlite Tests/Functionals/_data/current.sqlite

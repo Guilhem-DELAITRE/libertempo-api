@@ -1,7 +1,7 @@
 <?php declare(strict_types = 1);
 namespace LibertAPI\Tools\Libraries;
 
-use Doctrine\DBAL\Driver\Connection;
+use Doctrine\DBAL\Connection;
 
 /**
  * Bibliothèque d'accès aux données stockées de l'application
@@ -43,9 +43,9 @@ class Application
     private function fetchAllData() : array
     {
         $req = 'SELECT * FROM `conges_appli`';
-        $res = $this->storageConnector->query($req);
+        $res = $this->storageConnector->executeQuery($req);
 
-        return $res->fetchAll(\PDO::FETCH_ASSOC);
+        return $res->fetchAllAssociative();
     }
 
     public function getTokenInstance() : string

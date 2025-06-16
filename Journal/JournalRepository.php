@@ -107,7 +107,7 @@ class JournalRepository extends \LibertAPI\Tools\Libraries\ARepository
     {
         if (array_key_exists('id', $parametres)) {
             $this->queryBuilder->andWhere('log_id = :id');
-            $this->queryBuilder->setParameter(':id', (int) $parametres['id']);
+            $this->queryBuilder->setParameter('id', (int) $parametres['id']);
         }
     }
 

@@ -4,6 +4,7 @@ namespace LibertAPI\Utilisateur;
 use LibertAPI\Tools\Libraries\AEntite;
 use LibertAPI\Tools\Libraries\Application;
 use LibertAPI\Tools\Exceptions\UnknownResourceException;
+use LibertAPI\Tools\Libraries\ARepository;
 
 /**
  * {@inheritDoc}
@@ -14,7 +15,7 @@ use LibertAPI\Tools\Exceptions\UnknownResourceException;
  * @since 0.2
  * @see \LibertAPI\Tests\Units\Utilisateur\UtilisateurRepositoryTest
  */
-class UtilisateurRepository extends \LibertAPI\Tools\Libraries\ARepository
+class UtilisateurRepository extends ARepository
 {
     /**
      * @var Application Bibliothèque d'accès aux données de l'application
@@ -108,8 +109,8 @@ class UtilisateurRepository extends \LibertAPI\Tools\Libraries\ARepository
         if (array_key_exists('token', $paramsConsumer)) {
             $results['token'] = (string) $paramsConsumer['token'];
         }
-        if (array_key_exists('gt_date_last_access', $paramsConsumer)) {
-            $results['gt_date_last_access'] = (string) $paramsConsumer['gt_date_last_access'];
+        if (array_key_exists('date_last_access', $paramsConsumer)) {
+            $results['date_last_access'] = (string) $paramsConsumer['date_last_access'];
         }
         if (array_key_exists('isActif', $paramsConsumer)) {
             $results['is_active'] = $paramsConsumer['isActif'];
@@ -149,11 +150,11 @@ class UtilisateurRepository extends \LibertAPI\Tools\Libraries\ARepository
     {
         if (!empty($parametres['token'])) {
             $this->queryBuilder->set('token', ':token');
-            $this->queryBuilder->setParameter(':token', $parametres['token']);
+            $this->queryBuilder->setParameter('token', $parametres['token']);
         }
         if (!empty($parametres['date_last_access'])) {
             $this->queryBuilder->set('date_last_access', ':date_last_access');
-            $this->queryBuilder->setParameter(':date_last_access', $parametres['date_last_access']);
+            $this->queryBuilder->setParameter('date_last_access', $parametres['date_last_access']);
         }
     }
 
@@ -164,19 +165,19 @@ class UtilisateurRepository extends \LibertAPI\Tools\Libraries\ARepository
     {
         if (array_key_exists('u_login', $parametres)) {
             $this->queryBuilder->andWhere('u_login = :id');
-            $this->queryBuilder->setParameter(':id', $parametres['u_login']);
+            $this->queryBuilder->setParameter('id', $parametres['u_login']);
         }
         if (array_key_exists('token', $parametres)) {
             $this->queryBuilder->andWhere('token = :token');
-            $this->queryBuilder->setParameter(':token', $parametres['token']);
+            $this->queryBuilder->setParameter('token', $parametres['token']);
         }
-        if (array_key_exists('gt_date_last_access', $parametres)) {
-            $this->queryBuilder->andWhere('date_last_access >= :gt_date_last_access');
-            $this->queryBuilder->setParameter(':gt_date_last_access', $parametres['gt_date_last_access']);
+        if (array_key_exists('date_last_access', $parametres)) {
+            $this->queryBuilder->andWhere('date_last_access >= :date_last_access');
+            $this->queryBuilder->setParameter('date_last_access', $parametres['date_last_access']);
         }
         if (array_key_exists('is_active', $parametres)) {
             $this->queryBuilder->andWhere('u_is_active = :actif');
-            $this->queryBuilder->setParameter(':actif', ($parametres['is_active']) ? 'Y' : 'N');
+            $this->queryBuilder->setParameter('actif', ($parametres['is_active']) ? 'Y' : 'N');
         }
     }
 
@@ -202,6 +203,7 @@ class UtilisateurRepository extends \LibertAPI\Tools\Libraries\ARepository
             'date_inscription' => $entite->getFin(),*/
             'token' => $entite->getToken(),
             'date_last_access' => $entite->getDateLastAccess(),
+            'actif' => $entite->isActif(),
         ];
     }
 
@@ -215,6 +217,7 @@ class UtilisateurRepository extends \LibertAPI\Tools\Libraries\ARepository
     public function updateDateLastAccess(UtilisateurEntite $entite) : AEntite
     {
         $entite->updateDateLastAccess();
+        $this->queryBuilder->resetWhere();
         $this->queryBuilder->setParameters([]);
 
         $this->queryBuilder->update($this->getTableName());

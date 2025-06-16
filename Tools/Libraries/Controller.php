@@ -3,7 +3,6 @@ namespace LibertAPI\Tools\Libraries;
 
 use Exception;
 use Slim\Interfaces\RouteParserInterface;
-use \Slim\Interfaces\RouterInterface as IRouter;
 use Psr\Http\Message\ResponseInterface as IResponse;
 use Doctrine\ORM\EntityManager;
 

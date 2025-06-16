@@ -51,7 +51,7 @@ class GroupeRepository extends ARepository
     final protected function setValues(array $values)
     {
         $this->queryBuilder->setValue('g_groupename', ':name');
-        $this->queryBuilder->setParameter(':name', $values['name']);
+        $this->queryBuilder->setParameter('name', $values['name']);
         $this->queryBuilder->setValue('g_comment', $values['comment']);
         $this->queryBuilder->setValue('g_double_valid', $values['double_validation'] ? 'Y': 'N');
     }
@@ -60,15 +60,15 @@ class GroupeRepository extends ARepository
     {
         if (!empty($parametres['name'])) {
             $this->queryBuilder->set('g_groupename', ':name');
-            $this->queryBuilder->setParameter(':name', $parametres['name']);
+            $this->queryBuilder->setParameter('name', $parametres['name']);
         }
         if (!empty($parametres['comment'])) {
             $this->queryBuilder->set('g_comment', ':comment');
-            $this->queryBuilder->setParameter(':comment', $parametres['comment']);
+            $this->queryBuilder->setParameter('comment', $parametres['comment']);
         }
         if (!empty($parametres['double_validation'])) {
             $this->queryBuilder->set('g_double_valid', ':double_validation');
-            $this->queryBuilder->setParameter(':double_validation', $parametres['double_validation']);
+            $this->queryBuilder->setParameter('double_validation', $parametres['double_validation']);
         }
     }
 
@@ -79,7 +79,7 @@ class GroupeRepository extends ARepository
     {
         if (array_key_exists('id', $parametres)) {
             $this->queryBuilder->andWhere('g_gid = :id');
-            $this->queryBuilder->setParameter(':id', (int) $parametres['id']);
+            $this->queryBuilder->setParameter('id', (int) $parametres['id']);
         }
     }
 

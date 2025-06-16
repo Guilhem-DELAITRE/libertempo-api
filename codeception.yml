@@ -6,14 +6,19 @@ suites:
         modules:
             enabled:
                 - \LibertAPI\Tests\Functionals\_support\Helper\Api
-                - \Herloct\Codeception\Module\Slim:
+                - DoclerLabs\CodeceptionSlimModule\Module\Slim:
                     container: Tests/Functionals/container.php
+                    application: Tools/App.php
                 - REST:
-                    depends: \Herloct\Codeception\Module\Slim
+                    depends: DoclerLabs\CodeceptionSlimModule\Module\Slim
                     part: Json
                     headers:
                         Accept: application/json
                         Content-Type: application/json
+
+        config:
+            DoclerLabs\CodeceptionSlimModule\Module\Slim:
+
 
 paths:
     tests: Tests/Functionals

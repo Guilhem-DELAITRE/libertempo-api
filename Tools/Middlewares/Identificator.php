@@ -49,7 +49,7 @@ final class Identificator extends AMiddleware
         try {
             $this->utilisateur = $repository->find([
                 'token' => $token,
-                'gt_date_last_access' => $this->getDateLastAccessAuthorized(),
+                'date_last_access' => $this->getDateLastAccessAuthorized(),
                 'isActif' => true,
             ]);
             return $this->utilisateur instanceof AEntite;

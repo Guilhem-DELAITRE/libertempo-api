@@ -51,27 +51,27 @@ class TypeRepository extends \LibertAPI\Tools\Libraries\ARepository
     final protected function setValues(array $values)
     {
         $this->queryBuilder->setValue('ta_type', ':type');
-        $this->queryBuilder->setParameter(':type', $values['type']);
+        $this->queryBuilder->setParameter('type', $values['type']);
         $this->queryBuilder->setValue('ta_libelle', ':libelle');
-        $this->queryBuilder->setParameter(':libelle', $values['libelle']);
+        $this->queryBuilder->setParameter('libelle', $values['libelle']);
         $this->queryBuilder->setValue('ta_short_libelle', ':libelleCourt');
-        $this->queryBuilder->setParameter(':libelleCourt', $values['libelleCourt']);
+        $this->queryBuilder->setParameter('libelleCourt', $values['libelleCourt']);
     }
 
     final protected function setSet(array $parametres)
     {
         if (!empty($parametres['type'])) {
             $this->queryBuilder->set('ta_type', ':type');
-            $this->queryBuilder->setParameter(':type', $parametres['type']);
+            $this->queryBuilder->setParameter('type', $parametres['type']);
         }
         if (!empty($parametres['libelle'])) {
             $this->queryBuilder->set('ta_libelle', ':libelle');
             // @TODO : changer le schema
-            $this->queryBuilder->setParameter(':libelle', $parametres['libelle']);
+            $this->queryBuilder->setParameter('libelle', $parametres['libelle']);
         }
         if (!empty($parametres['libelleCourt'])) {
             $this->queryBuilder->set('ta_short_libelle', ':libelleCourt');
-            $this->queryBuilder->setParameter(':libelleCourt', $parametres['libelleCourt']);
+            $this->queryBuilder->setParameter('libelleCourt', $parametres['libelleCourt']);
         }
     }
 
@@ -99,7 +99,7 @@ class TypeRepository extends \LibertAPI\Tools\Libraries\ARepository
     {
         if (array_key_exists('id', $parametres)) {
             $this->queryBuilder->andWhere('ta_id = :id');
-            $this->queryBuilder->setParameter(':id', (int) $parametres['id']);
+            $this->queryBuilder->setParameter('id', (int) $parametres['id']);
         }
     }
 

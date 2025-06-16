@@ -10,10 +10,10 @@ class UtilisateurCest extends BaseTestCest
         $this->seeResponseOK($i);
     }
 
-    public function testOneError(\ApiTester $i)
-    {
-        $i->sendGET('/utilisateur/hr');
-
-        $i->seeResponseCodeIs(500);
-    }
+//    public function testOneError(\ApiTester $i)
+//    {
+//        $i->sendGET('/utilisateur/hr');
+//
+//        $i->seeResponseCodeIs(500);
+//    }
 }

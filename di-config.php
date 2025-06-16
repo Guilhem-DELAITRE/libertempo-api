@@ -3,28 +3,36 @@
 use Psr\Container\ContainerInterface as C;
 use Doctrine\ORM\EntityManager;
 use DI\Container;
-use Invoker\CallableResolver;
+use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use Slim\CallableResolver;
+use Slim\Handlers\Strategies\RequestResponse;
 use Slim\Http\Factory\DecoratedResponseFactory;
-use Slim\Http\Headers;
-use Slim\Http\Request;
 use Slim\Http\Response;
-use Psr\Http\Message\ServerRequestInterface as IRequest;
-use Psr\Http\Message\ResponseInterface as IResponse;
-use Slim\Interfaces\RouterInterface as IRouter;
+use Slim\Interfaces\CallableResolverInterface;
+use Slim\Interfaces\RouteCollectorInterface;
+use Slim\Interfaces\RouteParserInterface;
+use Slim\Interfaces\RouteResolverInterface;
 use LibertAPI\Tools\Controllers\AuthentificationController;
 use LibertAPI\Utilisateur\UtilisateurRepository;
 use LibertAPI\Tools\Libraries\Application;
 use LibertAPI\Tools\Libraries\StorageConfiguration;
+use Slim\Middleware\ErrorMiddleware;
 use Slim\Psr7\Factory\ResponseFactory;
 use Slim\Psr7\Factory\StreamFactory;
+use Slim\Routing\RouteCollector;
+use Slim\Routing\RouteParser;
+use Slim\Routing\RouteResolver;
 use function DI\get;
 use function DI\create;
 use function DI\autowire;
 use \Rollbar\Rollbar;
 
-return configurationGenerale() + configurationPersonnelle();
+function getConfigurationConfiguration(): array
+{
+    return configurationGenerale() + configurationPersonnelle();
+}
 
 function configurationGenerale() : array
 {
@@ -48,11 +56,20 @@ function configurationGenerale() : array
             'addContentLengthHeader' => get('settings.addContentLengthHeader'),
             'routerCacheFile' => get('settings.routerCacheFile'),
         ],
-        IRouter::class => get('router'),
-        'router' => create(Slim\Router::class)
-            ->method('setContainer', get(Container::class))
-            ->method('setCacheFile', get('settings.routerCacheFile')),
-        Slim\Router::class => get('router'),
+        RouteParserInterface::class => autowire(RouteParser::class),
+        RouteCollectorInterface::class => autowire(RouteCollector::class),
+        ResponseFactoryInterface::class => autowire(ResponseFactory::class),
+        CallableResolverInterface::class => autowire(CallableResolver::class),
+        RouteResolverInterface::class => autowire(RouteResolver::class),
+        ErrorMiddleware::class => function (C $c) {
+            return new ErrorMiddleware(
+                callableResolver: $c->get(CallableResolverInterface::class),
+                responseFactory: $c->get(ResponseFactoryInterface::class),
+                displayErrorDetails: true,
+                logErrors: true,
+                logErrorDetails: true,
+            );
+        },
         'callableResolver' => autowire(CallableResolver::class),
         'environment' => function (C $c) {
             return new Slim\Http\Environment($_SERVER);
@@ -76,7 +93,7 @@ function configurationPersonnelle() : array
 function configurationHandlers() : array
 {
     return [
-        'foundHandler' => create(\Slim\Handlers\Strategies\RequestResponse::class),
+        'foundHandler' => create(RequestResponse::class),
         'badRequestHandler' => function (C $c) {
             return function (ServerRequestInterface $request, RequestHandlerInterface $response) use ($c) {
                 return call_user_func(
@@ -195,7 +212,7 @@ function configurationLibertempo() : array
         AuthentificationController::class => function (C $c) {
             $repo = $c->get(UtilisateurRepository::class);
             $repo->setApplication($c->get(Application::class));
-            return new AuthentificationController($repo, $c->get(IRouter::class), $c->get(StorageConfiguration::class), $c->get(EntityManager::class));
+            return new AuthentificationController($repo, $c->get(RouteParserInterface::class), $c->get(StorageConfiguration::class), $c->get(EntityManager::class));
         },
         Doctrine\DBAL\Connection::class => function (C $c) {
             return $c->get('storageConnector');

@@ -117,27 +117,27 @@ class CreneauRepository extends ARepository
     {
         if (!empty($parametres['planning_id'])) {
             $this->queryBuilder->set('planning_id', ':planning_id');
-            $this->queryBuilder->setParameter(':planning_id', $parametres['planning_id']);
+            $this->queryBuilder->setParameter('planning_id', $parametres['planning_id']);
         }
         if (!empty($parametres['jour_id'])) {
             $this->queryBuilder->set('jour_id', ':jour_id');
-            $this->queryBuilder->setParameter(':jour_id', (int) $parametres['jour_id']);
+            $this->queryBuilder->setParameter('jour_id', (int) $parametres['jour_id']);
         }
         if (!empty($parametres['type_semaine'])) {
             $this->queryBuilder->set('type_semaine', ':type_semaine');
-            $this->queryBuilder->setParameter(':type_semaine', $parametres['type_semaine']);
+            $this->queryBuilder->setParameter('type_semaine', $parametres['type_semaine']);
         }
         if (!empty($parametres['type_periode'])) {
             $this->queryBuilder->set('type_periode', ':type_periode');
-            $this->queryBuilder->setParameter(':type_periode', $parametres['type_periode']);
+            $this->queryBuilder->setParameter('type_periode', $parametres['type_periode']);
         }
         if (!empty($parametres['debut'])) {
             $this->queryBuilder->set('debut', ':debut');
-            $this->queryBuilder->setParameter(':debut', $parametres['debut']);
+            $this->queryBuilder->setParameter('debut', $parametres['debut']);
         }
         if (!empty($parametres['fin'])) {
             $this->queryBuilder->set('fin', ':fin');
-            $this->queryBuilder->setParameter(':fin', $parametres['fin']);
+            $this->queryBuilder->setParameter('fin', $parametres['fin']);
         }
     }
 
@@ -148,11 +148,11 @@ class CreneauRepository extends ARepository
     {
         if (array_key_exists('id', $parametres)) {
             $this->queryBuilder->andWhere('creneau_id = :id');
-            $this->queryBuilder->setParameter(':id', (int) $parametres['id']);
+            $this->queryBuilder->setParameter('id', (int) $parametres['id']);
         }
         if (array_key_exists('planning_id', $parametres)) {
             $this->queryBuilder->andWhere('planning_id = :planningId');
-            $this->queryBuilder->setParameter(':planningId', (int) $parametres['planning_id']);
+            $this->queryBuilder->setParameter('planningId', (int) $parametres['planning_id']);
         }
     }
 

@@ -8,7 +8,7 @@ class CheckersCest extends BaseTestCest
 {
     public function testUnauthorized(\ApiTester $i)
     {
-        $i->deleteHeader('Token');
+        $i->unsetHttpHeader('Token');
         $i->sendGET('/groupe');
 
         $i->seeResponseCodeIs(401);
@@ -16,7 +16,7 @@ class CheckersCest extends BaseTestCest
 
     public function testBadRequest(\ApiTester $i)
     {
-        $i->deleteHeader('Accept');
+        $i->unsetHttpHeader('Accept');
         $i->sendGET('/groupe');
 
         $i->seeResponseCodeIs(400);

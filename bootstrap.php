@@ -1,7 +1,7 @@
 <?php
 // bootstrap.php
-use Doctrine\ORM\Tools\Setup;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\ORMSetup;
 
 require_once "vendor/autoload.php";
 
@@ -10,16 +10,16 @@ $isDevMode = true;
 $proxyDir = null;
 $cache = null;
 $useSimpleAnnotationReader = false;
-$paths = [__DIR__."/"];
-$config = Setup::createAnnotationMetadataConfiguration($paths, $isDevMode, $proxyDir, $cache, $useSimpleAnnotationReader);
+$paths = [__DIR__ . "/"];
+$config = ORMSetup::createAttributeMetadataConfiguration($paths, $isDevMode, $proxyDir, $cache);
 
 // database configuration parameters
 $dbParams = [
-    'driver'   => 'pdo_mysql',
-    'host'     => 'mysql',
-    'user'     => 'root',
+    'driver' => 'pdo_mysql',
+    'host' => 'mysql',
+    'user' => 'root',
     'password' => 'root',
-    'dbname'   => 'db_conges',
+    'dbname' => 'db_conges',
 ];
 
 // obtaining the entity manager

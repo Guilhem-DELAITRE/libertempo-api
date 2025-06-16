@@ -89,7 +89,7 @@ class PeriodeRepository extends \LibertAPI\Tools\Libraries\ARepository
     {
         if (array_key_exists('id', $parametres)) {
             $this->queryBuilder->andWhere('p_login = :id');
-            $this->queryBuilder->setParameter(':id', (int) $parametres['id']);
+            $this->queryBuilder->setParameter('id', (int) $parametres['id']);
         }
     }
 

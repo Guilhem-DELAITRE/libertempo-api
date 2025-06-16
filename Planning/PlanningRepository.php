@@ -49,7 +49,7 @@ class PlanningRepository extends \LibertAPI\Tools\Libraries\ARepository
     final protected function setValues(array $values)
     {
         $this->queryBuilder->setValue('name', ':name');
-        $this->queryBuilder->setParameter(':name', $values['name']);
+        $this->queryBuilder->setParameter('name', $values['name']);
         $this->queryBuilder->setValue('status', (string)$values['status']);
     }
 
@@ -68,11 +68,11 @@ class PlanningRepository extends \LibertAPI\Tools\Libraries\ARepository
     {
         if (!empty($parametres['name'])) {
             $this->queryBuilder->set('name', ':name');
-            $this->queryBuilder->setParameter(':name', $parametres['name']);
+            $this->queryBuilder->setParameter('name', $parametres['name']);
         }
         if (!empty($parametres['status'])) {
             $this->queryBuilder->set('status', ':status');
-            $this->queryBuilder->setParameter(':status', $parametres['status']);
+            $this->queryBuilder->setParameter('status', $parametres['status']);
         }
     }
 
@@ -86,7 +86,7 @@ class PlanningRepository extends \LibertAPI\Tools\Libraries\ARepository
     {
         if (array_key_exists('id', $parametres)) {
             $this->queryBuilder->andWhere('planning_id = :id');
-            $this->queryBuilder->setParameter(':id', $parametres['id']);
+            $this->queryBuilder->setParameter('id', $parametres['id']);
         }
     }
 

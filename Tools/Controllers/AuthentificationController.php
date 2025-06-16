@@ -7,6 +7,8 @@ use LibertAPI\Tools\Exceptions\BadRequestException;
 use LibertAPI\Tools\Exceptions\AuthentificationFailedException;
 use LibertAPI\Tools\Libraries\StorageConfiguration;
 use LibertAPI\Tools\Services\AAuthentifierFactoryService;
+use Slim\Interfaces\RouteParserInterface;
+use Slim\Interfaces\RouteResolverInterface;
 use Slim\Interfaces\RouteResolverInterface as IRouter;
 use LibertAPI\Tools\Interfaces;
 use Psr\Http\Message\ServerRequestInterface as IRequest;
@@ -26,7 +28,7 @@ use Doctrine\ORM\EntityManager;
 final class AuthentificationController extends Controller
 implements Interfaces\IGetable
 {
-    public function __construct(UtilisateurRepository $repository, IRouter $router, StorageConfiguration $configuration, EntityManager $entityManager)
+    public function __construct(UtilisateurRepository $repository, RouteParserInterface $router, StorageConfiguration $configuration, EntityManager $entityManager)
     {
         parent::__construct($repository, $router, $entityManager);
         $this->configuration = $configuration;
@@ -35,12 +37,12 @@ implements Interfaces\IGetable
     /**
      * {@inheritDoc}
      */
-    public function get(IRequest $request, IResponse $response, array $arguments) : IResponse
+    public function get(IRequest $request, IResponse $response, array $routeArguments) : IResponse
     {
         try {
             $authentifier = AAuthentifierFactoryService::getAuthentifier($this->configuration, $this->repository);
             // Ajout de la configuration dans ce contexte, pour les authentifiers
-            $request = $request->withAttribute('configurationFileData', $arguments['configurationFileData']);
+            $request = $request->withAttribute('configurationFileData', $routeArguments['configurationFileData']);
             if (!$authentifier->isAuthentificationSucceed($request)) {
                 throw new AuthentificationFailedException();
             }

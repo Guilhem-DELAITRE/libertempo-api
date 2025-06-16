@@ -40,8 +40,9 @@
         "atoum/atoum": "4.*",
         "codacy/coverage": "1.*",
         "codeception/codeception": "5.*",
-        "docler-labs/codeception-slim-module": "4.*",
-        "rector/rector": "2.*"
+        "docler-labs/codeception-slim-module": "^4.2",
+        "rector/rector": "2.*",
+        "codeception/module-rest": "^3.4"
     },
     "scripts": {
         "test": "vendor/bin/phpunit"

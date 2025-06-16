@@ -5,6 +5,7 @@ use LibertAPI\Tools\AMiddleware;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Http\Message\ResponseInterface;
+use RuntimeException;
 
 /**
  * Vérifie les autorisations d'accès pour la route et l'utilisateur donnés
@@ -68,7 +69,7 @@ final class AccessChecker extends AMiddleware
 
                 return $handler->handle($request);
             default:
-                throw new \RuntimeException('Rights were not configured for the route ' . $ressourcePath);
+                throw new RuntimeException('Rights were not configured for the route ' . $ressourcePath);
         }
     }
 }

@@ -1,7 +1,7 @@
 <?php declare(strict_types = 1);
 namespace LibertAPI\Tools\Libraries;
 
-use Doctrine\DBAL\Driver\Connection;
+use Doctrine\DBAL\Connection;
 
 /**
  * Objet de lecture de la configuration stockée. Honteusement volée de libertempo/web 1.12
@@ -18,8 +18,8 @@ class StorageConfiguration
     public function __construct(Connection $storageConnector)
     {
         $req = 'SELECT * FROM conges_config ORDER BY conf_groupe';
-        $res = $storageConnector->query($req);
-        foreach ($res->fetchAll(\PDO::FETCH_ASSOC) as $value) {
+        $res = $storageConnector->executeQuery($req);
+        foreach ($res->fetchAllAssociative() as $value) {
             $groupe = $value['conf_groupe'];
             $nom = $value['conf_nom'];
             $this->data[$groupe][$nom] = [

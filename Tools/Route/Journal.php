@@ -12,6 +12,7 @@
 
 /* Routes sur le journal */
 
+use LibertAPI\Tools\Controllers\JournalController;
 use Slim\Routing\RouteCollectorProxy;
 
 $app->group('/journal', function (RouteCollectorProxy $journal): void {

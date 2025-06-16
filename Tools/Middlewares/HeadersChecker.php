@@ -15,7 +15,7 @@ final class HeadersChecker extends AMiddleware
 {
     public function __invoke(ServerRequestInterface $request, RequestHandlerInterface $handler) : ResponseInterface
     {
-        if (true || 'application/json' === $request->getHeaderLine('Accept')) {
+        if ('application/json' === $request->getHeaderLine('Accept')) {
             return $handler->handle($request);
         }
         return call_user_func(

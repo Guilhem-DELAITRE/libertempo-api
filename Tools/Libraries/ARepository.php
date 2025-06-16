@@ -5,7 +5,6 @@ use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Driver;
 use Doctrine\DBAL\Query\QueryBuilder;
 use \LibertAPI\Tools\Exceptions\UnknownResourceException;
-use PDO;
 
 /**
  * Garant de la cohérence métier de l'entité en relation.
@@ -53,7 +52,7 @@ abstract class ARepository
         $this->setWhere(['id' => $id]);
         $res = $this->queryBuilder->executeQuery();
 
-        $data = $res->fetchAssociative(\PDO::FETCH_ASSOC);
+        $data = $res->fetchAssociative();
         if (empty($data)) {
             throw new UnknownResourceException('#' . $id . ' is not a valid resource');
         }
@@ -78,7 +77,7 @@ abstract class ARepository
         $this->setWhere($this->getParamsConsumer2Storage($parametres));
         $res = $this->queryBuilder->executeQuery();
 
-        $data = $res->fetchAllAssociative(PDO::FETCH_ASSOC);
+        $data = $res->fetchAllAssociative();
         if (empty($data)) {
             throw new \UnexpectedValueException('No resource match with these parameters');
         }
