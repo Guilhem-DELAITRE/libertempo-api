@@ -14,6 +14,8 @@ use Psr\Http\Message\ServerRequestInterface as IRequest;
  */
 class InterneAuthentifierService extends AAuthentifierFactoryService
 {
+    public $repository;
+
     public function __construct(ARepository $repository)
     {
         $this->repository = $repository;

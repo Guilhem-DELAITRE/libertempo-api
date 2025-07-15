@@ -4,10 +4,7 @@
  * @since 0.1
  */
 
-define('DS', DIRECTORY_SEPARATOR);
-define('ROOT_PATH', dirname(__DIR__));
-define('TOOLS_PATH', ROOT_PATH . DS . 'Tools');
-define('TESTS_FUNCTIONALS_PATH', ROOT_PATH . DS . 'Tests' . DS . 'Functionals');
+require_once "../Tools/Config.php";
 
 /**
  * Find autoloader in a package context AND in a library context

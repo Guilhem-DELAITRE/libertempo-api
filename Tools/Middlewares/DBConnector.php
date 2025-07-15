@@ -58,15 +58,17 @@ final class DBConnector extends AMiddleware
         return $connexion;
     }
 
-    private function getRealBase() : \PDO
+    private function getRealBase() : Connection
     {
         $configuration = $this->getContainer()->get('configurationFileData');
+
+        error_log(print_r($configuration->db, true));
 
         $connexion = DBAL\DriverManager::getConnection(
             [
                 'driver' => 'pdo_mysql',
                 'host' => $configuration->db->serveur,
-                'name' => $configuration->db->base,
+                'dbname' => $configuration->db->base,
                 'user' => $configuration->db->utilisateur,
                 'password' => $configuration->db->mot_de_passe,
             ],
@@ -79,6 +81,6 @@ final class DBConnector extends AMiddleware
             [\PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES \'utf8\';']
         );
 
-        return $dbh;
+        return $connexion;
     }
 }
